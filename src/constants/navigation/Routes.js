@@ -1,3 +1,6 @@
-export const FRONTEND_ROUTE = {
-    LOGIN: '/'
+export const FRONTEND_ROUTES = {
+    LOGIN: '/',
+    HOME: '/home',
+    PICTURES: '/pictures',
+    TASKS: '/tasks'
 };
