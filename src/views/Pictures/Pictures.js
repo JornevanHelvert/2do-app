@@ -4,8 +4,9 @@ import {connect, useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {MaterialUI} from "../../constants/UI/material-components";
-import {downloadImages, imageForDetail} from "../../redux/actions/imageActions";
+import {downloadImages, imageForDetail, uploadImage} from "../../redux/actions/imageActions";
 import LoadingGif from "../../assets/gifs/loading.gif";
+import {BackButton} from "../../components/index";
 
 const Pictures = () => {
     const history = useHistory();
@@ -19,8 +20,6 @@ const Pictures = () => {
     useEffect(() => {
         dispatch(downloadImages());
     }, []);
-
-    const redirectToHome = () => history.push(FRONTEND_ROUTES.HOME);
 
     const setImageForDetail = (imageUrl) => {
         dispatch(imageForDetail(imageUrl));
@@ -43,23 +42,23 @@ const Pictures = () => {
         )
     };
 
+    const upload = (e) => dispatch(uploadImage(e.target.files));
+
     return (
         <div className={styles.Pictures}>
             <MaterialUI.Grid container justify="space-evenly" spacing={0}>
-                <MaterialUI.Grid item xs={6}>
-                    <div className={styles.backButton} onClick={redirectToHome}>&lt; Terug</div>
-                </MaterialUI.Grid>
+                <BackButton url={FRONTEND_ROUTES.HOME} />
                 <MaterialUI.Grid item xs={6}>
                     <div className={styles.addButton}>
-                        <input type="file" id="file"/>
-                        <label for="file">+ Toevoegen</label>
+                        <input type="file" id="file" onChange={e => upload(e)}/>
+                        <label htmlFor="file">+ Toevoegen</label>
                     </div>
                 </MaterialUI.Grid>
             </MaterialUI.Grid>
             <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.imagesContainer}>
-                {imageUrls.length < 7? renderLoading() :imageUrls.map((value, key) =>
+                {imageUrls.length > 0 ? imageUrls.map((value, key) =>
                     renderImage(value, key)
-                )}
+                ) : renderLoading()}
             </MaterialUI.Grid>
         </div>
     )
