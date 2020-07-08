@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './Home.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {MaterialUI} from "../../constants/UI/material-components";
 import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
-import {downloadImages} from "../../redux/actions/imageActions";
 
 const Home = () => {
     const {firstName} = useSelector(state => ({
@@ -16,10 +15,6 @@ const Home = () => {
 
     const redirectToPictures = () => history.push(FRONTEND_ROUTES.PICTURES);
     const redirectToTasks = () => history.push(FRONTEND_ROUTES.TASKS);
-
-    useEffect(() => {
-        dispatch(downloadImages());
-    }, []);
 
     return (
         <div className={styles.Home}>

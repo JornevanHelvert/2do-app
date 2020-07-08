@@ -30,5 +30,23 @@
 }
 
 .imagesContainer {
+    margin-top: 3%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
 
+.image {
+    max-height: 300px;
+    width: auto;
+    margin-bottom: 10%;
+}
+
+.loading {
+    text-align: center;
+}
+
+.loadingGif {
+    max-height: 100px;
+    width: auto;
+    margin-top: 20%;
 }

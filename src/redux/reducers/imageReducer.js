@@ -2,7 +2,8 @@ import ActionTypes from "../../constants/redux/ActionTypes";
 
 const initialState = {
     images: [],
-    nextPageToken: ''
+    nextPageToken: '',
+    detailImageUrl: ''
 };
 
 export default function (state = initialState, action) {
@@ -12,6 +13,12 @@ export default function (state = initialState, action) {
                 ...state,
                 images: action.images,
                 nextPageToken: action.nextPageToken
+            }
+        }
+        case ActionTypes.IMAGE_DETAIL: {
+            return {
+                ...state,
+                detailImageUrl: action.imageUrl
             }
         }
         default:

@@ -7,10 +7,14 @@ const setDownloadImages = ({images, nextPageToken}) => ({
     nextPageToken
 });
 
+const setImageForDetail = imageUrl => ({
+    type: ActionTypes.IMAGE_DETAIL,
+    imageUrl
+});
+
 export const downloadImages = () => async dispatch => {
   try {
-      const images = await bucket.list({maxResults: 20});
-      console.log(images.nextPageToken);
+      const images = await bucket.list({maxResults: 12});
 
       const imageUrls = [];
 
@@ -23,4 +27,12 @@ export const downloadImages = () => async dispatch => {
   } catch (e) {
       console.log(e);
   }
+};
+
+export const imageForDetail = (imageUrl) => async dispatch => {
+    try {
+        dispatch(setImageForDetail(imageUrl));
+    } catch (e) {
+        console.log(e);
+    }
 };
