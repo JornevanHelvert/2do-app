@@ -20,18 +20,12 @@ const setImageUploadSuccess = imageUrl => ({
 export const downloadImages = () => async dispatch => {
   try {
       const images = await bucket.list({maxResults: 12});
-
-      console.log(images);
-
       const imageUrls = [];
 
       for (let i = 0; i < images.items.length; i++) {
           const url = await bucket.child(images.items[i].name).getDownloadURL();
-          console.log(url);
           imageUrls.push(url);
       }
-
-      console.log(imageUrls);
 
       dispatch(setDownloadImages({images: imageUrls, nextPageToken: images.nextPageToken}));
   } catch (e) {
