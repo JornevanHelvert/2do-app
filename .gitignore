@@ -116,4 +116,12 @@ sketch
 
 .idea
 
+.env
+
+.firebase
+.firebaserc
+build
+firebase.json
+src/assets
+
 # End of https://www.toptal.com/developers/gitignore/api/intellij,react

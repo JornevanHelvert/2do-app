@@ -1,0 +1,33 @@
+.Login {
+    height: auto;
+    width: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    background: url("../../assets/images/background.jpg") no-repeat center fixed #2c2c2c;
+    background-size: contain;
+    flex-grow: 1;
+}
+
+.LoginPaperGrid {
+    background-color: transparent !important;
+    transition: none !important;
+    box-shadow: none !important;
+    text-align: center;
+    margin-top: 100%;
+}
+
+.LoginPaperGrid button {
+    border-radius: 20px;
+    height: 30px;
+}
+
+.fullHeight {
+    height: 100%;
+}
+
+.GoogleLogo {
+    height: 3rem;
+}
