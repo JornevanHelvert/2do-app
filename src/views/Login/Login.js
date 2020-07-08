@@ -17,8 +17,8 @@ const Login = () => {
     };
 
     return (
-        <div className={styles.Login}>
-            <MaterialUI.Grid container justify="center" spacing={6} className={styles.fullHeight}>
+        <div className={[styles.Login, styles.fullHeight]}>
+            <MaterialUI.Grid container justify="center" spacing={6} className={[styles.fullHeight, styles.backgroundImage]}>
                 <MaterialUI.Grid item xs={4}>
                     <MaterialUI.Paper className={styles.LoginPaperGrid}>
                         <img src={GoogleLogo} alt="Google logo" className={styles.GoogleLogo} onClick={loginUser}/>
