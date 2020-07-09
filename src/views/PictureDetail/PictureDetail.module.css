@@ -16,6 +16,11 @@
     margin-top: 2%;
 }
 
+.buttonContainer {
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+
 @media (max-height: 900px) {
     .image {
         margin-top: 10%;

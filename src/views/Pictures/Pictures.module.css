@@ -10,7 +10,7 @@
 .addButton {
     color: white;
     cursor: pointer;
-    padding: 1% 0;
+    padding: 1% 20%;
     text-align: right;
 }
 
@@ -20,6 +20,8 @@
 
 .addButton label {
     cursor: pointer;
+    font-size: 15pt;
+    font-weight: bold;
 }
 
 .imagesList {
@@ -38,6 +40,11 @@
     max-height: 100px;
     width: auto;
     margin-top: 20%;
+}
+
+.buttonContainer {
+    margin-top: 2%;
+    margin-bottom: 1%;
 }
 
 @media (max-width: 984px) {

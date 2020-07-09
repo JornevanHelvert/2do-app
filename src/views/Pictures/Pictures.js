@@ -52,11 +52,11 @@ const Pictures = () => {
 
     return (
         <div className={styles.Pictures}>
-            <MaterialUI.Grid container justify="space-evenly" spacing={0}>
+            <MaterialUI.Grid container justify="space-evenly" spacing={0} className={styles.buttonContainer}>
                 <BackButton url={FRONTEND_ROUTES.HOME}/>
                 <MaterialUI.Grid item xs={6}>
                     <div className={styles.addButton}>
-                        <label htmlFor="file">+ Toevoegen</label>
+                        <label htmlFor="file">+</label>
                         <input type="file" id="file" onChange={e => upload(e)}/>
                     </div>
                 </MaterialUI.Grid>

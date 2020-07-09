@@ -2,6 +2,8 @@
     color: white;
     cursor: pointer;
     padding: 1% 0 0 25%;
+    font-size: 15pt;
+    font-weight: bold;
 }
 
 @media (max-width: 984px) {

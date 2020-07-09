@@ -12,7 +12,7 @@ const PictureDetail = () => {
 
     return (
         <div className={styles.PictureDetail}>
-            <MaterialUI.Grid container justify="flex-start" spacing={0}>
+            <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.buttonContainer}>
                 <BackButton url={FRONTEND_ROUTES.PICTURES} />
             </MaterialUI.Grid>
             <MaterialUI.Grid container justify="center" spacing={0} className={styles.marginTop}>
