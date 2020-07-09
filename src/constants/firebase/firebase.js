@@ -1,6 +1,7 @@
 import app from "firebase/app";
 import * as firebase from "firebase";
 import 'firebase/storage';
+import {restoreSession} from "../../redux/actions/userActions";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -21,7 +22,14 @@ export const doSignInWithGoogle = async () => {
     return app.auth().signInWithPopup(provider);
 };
 
-export const doSignOut = () => this.auth.signOut();
+export const doSignOut = async () => app.auth().signOut();
+
+export const checkAuth = () => dispatch => firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        console.log(user);
+        dispatch(restoreSession(user));
+    }
+});
 
 const storage = app.storage();
 export const bucket = storage.ref('/');

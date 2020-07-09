@@ -9,7 +9,7 @@ const setLoginSuccess = ({token, firstName, email}) => ({
 });
 
 const setLogoutSuccess = () => ({
-   type: ActionTypes.LOGOUT_USER
+    type: ActionTypes.LOGOUT_USER
 });
 
 export const login = () => async dispatch => {
@@ -26,11 +26,26 @@ export const login = () => async dispatch => {
     }
 };
 
+export const restoreSession = (user) => async dispatch => {
+    try {
+        if (user) {
+            const userFirstname = user.displayName.substring(0, user.displayName.indexOf(' '));
+            dispatch(setLoginSuccess({
+                token: user.refreshToken,
+                firstName: userFirstname,
+                email: user.email
+            }));
+        }
+    } catch (e) {
+        console.log(e);
+    }
+};
+
 export const logout = () => async dispatch => {
-  try {
-      await doSignOut();
-      dispatch(setLogoutSuccess());
-  } catch (e) {
-      console.log(e);
-  }
+    try {
+        await doSignOut();
+        dispatch(setLogoutSuccess());
+    } catch (e) {
+        console.log(e);
+    }
 };

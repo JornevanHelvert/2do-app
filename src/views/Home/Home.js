@@ -20,7 +20,7 @@ const Home = () => {
     const redirectToTasks = () => history.push(FRONTEND_ROUTES.TASKS);
     const signOut = async () => {
         setOpen(false);
-        await dispatch(logout);
+        await dispatch(logout());
         history.push(FRONTEND_ROUTES.LOGIN);
     };
 
@@ -44,7 +44,7 @@ const Home = () => {
                     </div>
                 </MaterialUI.Grid>
             </MaterialUI.Grid>
-            <DialogComponent open={open} logout={signOut} setOpen={setOpen} title="Afmelden"
+            <DialogComponent open={open} signOut={signOut} setOpenToClose={() => setOpen(false)} title="Afmelden"
                              content="Ben je zeker dat je wilt afmelden?"/>
         </div>
     );

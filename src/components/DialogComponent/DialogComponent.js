@@ -6,7 +6,7 @@ const DialogComponent = (props) => {
     return (
         <MaterialUI.Dialog
             open={props.open}
-            onClose={() => props.setOpen(false)}
+            onClose={props.setOpenToClose}
             aria-labelledby="alert-dialog-slide-title"
             aria-describedby="alert-dialog-slide-description"
         >
@@ -17,10 +17,10 @@ const DialogComponent = (props) => {
                 </MaterialUI.DialogContentText>
             </MaterialUI.DialogContent>
             <MaterialUI.DialogActions>
-                <MaterialUI.Button onClick={() => props.setOpen(false)} color="primary">
+                <MaterialUI.Button onClick={props.setOpenToClose} color="primary">
                     Nee
                 </MaterialUI.Button>
-                <MaterialUI.Button onClick={props.logout} color="primary">
+                <MaterialUI.Button onClick={props.signOut} color="primary">
                     Ja
                 </MaterialUI.Button>
             </MaterialUI.DialogActions>
@@ -30,10 +30,10 @@ const DialogComponent = (props) => {
 
 DialogComponent.propTypes = {
     open: PropTypes.bool,
-    setOpen: PropTypes.func,
+    setOpenToClose: PropTypes.func,
     title: PropTypes.string,
     content: PropTypes.string,
-    logout: PropTypes.func
+    signOut: PropTypes.func
 };
 
 export default DialogComponent;
