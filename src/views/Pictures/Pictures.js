@@ -19,24 +19,30 @@ const Pictures = () => {
 
     useEffect(() => {
         dispatch(downloadImages());
-    }, []);
+    }, [dispatch]);
 
     const setImageForDetail = (imageUrl) => {
         dispatch(imageForDetail(imageUrl));
         history.push(FRONTEND_ROUTES.PICTURE_DETAILS);
     };
 
-    const renderImage = (url, key) => {
+    const renderImage = () => {
         return (
-            <MaterialUI.Grid item xs={2} key={key}>
-                <img alt="personal image" src={url} className={styles.image} onClick={() => setImageForDetail(url)}/>
-            </MaterialUI.Grid>
+            <div className={styles.imagesContainer}>
+                <MaterialUI.GridList cellHeight={400} className={styles.imagesList}>
+                    {imageUrls.map((value, key) =>
+                        <MaterialUI.GridListTile key={key} cols={1}>
+                            <img alt="personal" src={value} onClick={() => setImageForDetail(value)}/>
+                        </MaterialUI.GridListTile>
+                    )}
+                </MaterialUI.GridList>
+            </div>
         )
     };
 
     const renderLoading = () => {
         return (
-            <MaterialUI.Grid item xs={12} className={styles.loading}>
+            <MaterialUI.Grid container justify="center" spacing={0}>
                 <img className={styles.loadingGif} src={LoadingGif} alt="Loading..."/>
             </MaterialUI.Grid>
         )
@@ -47,19 +53,15 @@ const Pictures = () => {
     return (
         <div className={styles.Pictures}>
             <MaterialUI.Grid container justify="space-evenly" spacing={0}>
-                <BackButton url={FRONTEND_ROUTES.HOME} />
+                <BackButton url={FRONTEND_ROUTES.HOME}/>
                 <MaterialUI.Grid item xs={6}>
                     <div className={styles.addButton}>
-                        <input type="file" id="file" onChange={e => upload(e)}/>
                         <label htmlFor="file">+ Toevoegen</label>
+                        <input type="file" id="file" onChange={e => upload(e)}/>
                     </div>
                 </MaterialUI.Grid>
             </MaterialUI.Grid>
-            <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.imagesContainer}>
-                {imageUrls.length > 0 ? imageUrls.map((value, key) =>
-                    renderImage(value, key)
-                ) : renderLoading()}
-            </MaterialUI.Grid>
+            {imageUrls.length > 0 ? renderImage() : renderLoading()}
         </div>
     )
 };

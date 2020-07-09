@@ -16,7 +16,7 @@ const PictureDetail = () => {
                 <BackButton url={FRONTEND_ROUTES.PICTURES} />
             </MaterialUI.Grid>
             <MaterialUI.Grid container justify="center" spacing={0} className={styles.marginTop}>
-                <img src={imageUrl} className={styles.image} alt="Personal Image"/>
+                <img src={imageUrl} className={styles.image} alt="Personal"/>
             </MaterialUI.Grid>
         </div>
     );

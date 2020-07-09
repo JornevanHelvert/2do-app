@@ -1,5 +1,11 @@
 .backButton {
     color: white;
     cursor: pointer;
-    padding: 1% 0 0 3%;
+    padding: 1% 0 0 25%;
+}
+
+@media (max-width: 984px) {
+    .backButton {
+        padding-left: 12.5%;
+    }
 }
