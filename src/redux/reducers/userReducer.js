@@ -16,6 +16,14 @@ export default function (state = initialState, action) {
                 email: action.email
             }
         }
+        case ActionTypes.LOGOUT_USER: {
+            return {
+                ...state,
+                token: '',
+                firstName: '',
+                email: ''
+            }
+        }
         default:
             return {
                 ...state

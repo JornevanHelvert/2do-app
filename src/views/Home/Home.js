@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './Home.module.css';
-import { useSelector } from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {MaterialUI} from "../../constants/UI/material-components";
 import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
+import {logout} from "../../redux/actions/userActions";
+import {DialogComponent} from "../../components/index";
 
 const Home = () => {
     const {firstName} = useSelector(state => ({
@@ -11,9 +13,16 @@ const Home = () => {
     }));
 
     const history = useHistory();
+    const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
 
     const redirectToPictures = () => history.push(FRONTEND_ROUTES.PICTURES);
     const redirectToTasks = () => history.push(FRONTEND_ROUTES.TASKS);
+    const signOut = async () => {
+        setOpen(false);
+        await dispatch(logout);
+        history.push(FRONTEND_ROUTES.LOGIN);
+    };
 
     return (
         <div className={styles.Home}>
@@ -29,7 +38,14 @@ const Home = () => {
                         <h1>Bekijk foto's</h1>
                     </div>
                 </MaterialUI.Grid>
+                <MaterialUI.Grid item xs={4}>
+                    <div className={styles.card} onClick={() => setOpen(true)}>
+                        <h1>Afmelden</h1>
+                    </div>
+                </MaterialUI.Grid>
             </MaterialUI.Grid>
+            <DialogComponent open={open} logout={signOut} setOpen={setOpen} title="Afmelden"
+                             content="Ben je zeker dat je wilt afmelden?"/>
         </div>
     );
 };

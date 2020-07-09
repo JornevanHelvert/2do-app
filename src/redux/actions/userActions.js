@@ -1,4 +1,4 @@
-import {doSignInWithGoogle} from "../../constants/firebase/firebase";
+import {doSignInWithGoogle, doSignOut} from "../../constants/firebase/firebase";
 import ActionTypes from "../../constants/redux/ActionTypes";
 
 const setLoginSuccess = ({token, firstName, email}) => ({
@@ -6,6 +6,10 @@ const setLoginSuccess = ({token, firstName, email}) => ({
     token,
     firstName,
     email
+});
+
+const setLogoutSuccess = () => ({
+   type: ActionTypes.LOGOUT_USER
 });
 
 export const login = () => async dispatch => {
@@ -20,4 +24,13 @@ export const login = () => async dispatch => {
     } catch (e) {
         console.log(e);
     }
+};
+
+export const logout = () => async dispatch => {
+  try {
+      await doSignOut();
+      dispatch(setLogoutSuccess());
+  } catch (e) {
+      console.log(e);
+  }
 };
