@@ -28,17 +28,17 @@ const Home = () => {
         <div className={styles.Home}>
             <h1>Welkom {firstName}</h1>
             <MaterialUI.Grid container justify="space-evenly" spacing={0}>
-                <MaterialUI.Grid item xs={4}>
+                <MaterialUI.Grid item xs={6} className={styles.centerAlign}>
                     <div className={styles.card} onClick={redirectToTasks}>
                         <h1>Bekijk je taken</h1>
                     </div>
                 </MaterialUI.Grid>
-                <MaterialUI.Grid item xs={4}>
+                <MaterialUI.Grid item xs={6}>
                     <div className={styles.card} onClick={redirectToPictures}>
                         <h1>Bekijk foto's</h1>
                     </div>
                 </MaterialUI.Grid>
-                <MaterialUI.Grid item xs={4}>
+                <MaterialUI.Grid item xs={6}>
                     <div className={styles.card} onClick={() => setOpen(true)}>
                         <h1>Afmelden</h1>
                     </div>
