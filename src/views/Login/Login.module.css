@@ -13,7 +13,7 @@
     box-shadow: none !important;
     text-align: center;
     top: 65%;
-    left: 30%;
+    left: 25%;
     right: 30%;
     position: absolute;
 }
@@ -28,4 +28,10 @@
 
 .GoogleLogo {
     height: 3rem;
+}
+
+@media (min-width: 1000px) {
+    .LoginPaperGrid {
+        left: 30%;
+    }
 }
