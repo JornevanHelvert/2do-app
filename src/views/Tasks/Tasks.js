@@ -50,13 +50,8 @@ const Tasks = () => {
 
     return (
         <div className={styles.Tasks}>
-            <MaterialUI.Grid container justify="space-evenly" spacing={0} className={styles.buttonContainer}>
+            <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.buttonContainer}>
                 <BackButton url={FRONTEND_ROUTES.HOME}/>
-                <MaterialUI.Grid item xs={6}>
-                    <div className={styles.addButton}>
-                        <label htmlFor="file">+</label>
-                    </div>
-                </MaterialUI.Grid>
             </MaterialUI.Grid>
             {tasks.length > 0 ? renderTasks() : <Loading/>}
         </div>

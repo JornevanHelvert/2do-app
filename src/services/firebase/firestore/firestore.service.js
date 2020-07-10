@@ -27,10 +27,18 @@ export const getTasksFromFirestore = async (user) => {
     return tasks;
 };
 
-export const updateTaskStatusInFirestore = (task) => {
-    db.collection(QueryConstants.TASKS_COLLECTION)
+export const updateTaskStatusInFirestore = async (task) => {
+    await db.collection(QueryConstants.TASKS_COLLECTION)
         .doc(task.id)
         .set({
             isDone: !task.isDone
         }, {merge: true});
+};
+
+export const writeFcmTokenToDb = async ({user, token}) => {
+    await db.collection(QueryConstants.TOKEN_COLLECTION)
+        .doc(user)
+        .set(({
+            token
+        }))
 };

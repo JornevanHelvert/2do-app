@@ -26,7 +26,7 @@ const Home = () => {
     };
 
     useEffect(() => {
-        askNotificationPermission();
+        askNotificationPermission(firstName).then();
     }, []);
 
     return (
@@ -35,7 +35,17 @@ const Home = () => {
             <MaterialUI.Grid container justify="space-evenly" spacing={0}>
                 <MaterialUI.Grid item xs={6} className={styles.centerAlign}>
                     <div className={styles.card} onClick={redirectToTasks}>
-                        <h1>Bekijk je taken</h1>
+                        <h1>Mijn to do's</h1>
+                    </div>
+                </MaterialUI.Grid>
+                <MaterialUI.Grid item xs={6}>
+                    <div className={styles.card}>
+                        <h1>Nieuwe taak</h1>
+                    </div>
+                </MaterialUI.Grid>
+                <MaterialUI.Grid item xs={6}>
+                    <div className={styles.card}>
+                        <h1>Taken beheren</h1>
                     </div>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={6}>
