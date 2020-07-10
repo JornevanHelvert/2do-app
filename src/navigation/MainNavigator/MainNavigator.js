@@ -18,9 +18,11 @@ export const MainNavigator = () => {
                           authenticated={authToken}/>
             <PrivateRoute path={FRONTEND_ROUTES.PICTURES} component={Views.PicturesScreen} authenticated={authToken}/>
             <PrivateRoute path={FRONTEND_ROUTES.TASKS} component={Views.TasksScreen} authenticated={authToken}/>
+            <PrivateRoute path={FRONTEND_ROUTES.TASK_DETAILS} component={Views.TaskDetailScreen}
+                          authenticated={authToken}/>
         </Switch>
     );
-}
+};
 
 MainNavigator.propTypes = {};
 

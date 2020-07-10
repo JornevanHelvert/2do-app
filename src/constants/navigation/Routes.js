@@ -3,5 +3,6 @@ export const FRONTEND_ROUTES = {
     HOME: '/home',
     PICTURES: '/pictures',
     PICTURE_DETAILS: '/picture/detail',
-    TASKS: '/tasks'
+    TASKS: '/tasks',
+    TASK_DETAILS: '/task/detail'
 };

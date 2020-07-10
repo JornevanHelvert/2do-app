@@ -1,27 +1,22 @@
 import ActionTypes from "../../constants/redux/ActionTypes";
 
 const initialState = {
-    token: '',
-    firstName: '',
-    email: ''
+    tasks: [],
+    taskForDetail: {},
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case ActionTypes.LOGIN_SUCCESS: {
+        case ActionTypes.GET_ALL_TASKS_FOR_USER: {
             return {
                 ...state,
-                token: action.token,
-                firstName: action.firstName,
-                email: action.email
+                tasks: [...action.tasks]
             }
         }
-        case ActionTypes.LOGOUT_USER: {
+        case ActionTypes.SET_TASK_FOR_DETAIL: {
             return {
                 ...state,
-                token: '',
-                firstName: '',
-                email: ''
+                taskForDetail: action.task
             }
         }
         default:

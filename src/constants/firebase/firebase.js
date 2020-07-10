@@ -17,19 +17,20 @@ const firebaseConfig = {
 app.initializeApp(firebaseConfig);
 app.analytics();
 
+const storage = app.storage();
+
 export const doSignInWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     return app.auth().signInWithPopup(provider);
 };
 
-export const doSignOut = async () => app.auth().signOut();
-
 export const checkAuth = () => dispatch => firebase.auth().onAuthStateChanged(user => {
     if (user) {
-        console.log(user);
         dispatch(restoreSession(user));
     }
 });
 
-const storage = app.storage();
+export const doSignOut = async () => app.auth().signOut();
+
 export const bucket = storage.ref('/');
+export const db = firebase.firestore();

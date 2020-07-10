@@ -3,11 +3,13 @@ import Home from "./Home/Home";
 import Pictures from "./Pictures/Pictures";
 import Tasks from "./Tasks/Tasks";
 import PictureDetail from "./PictureDetail/PictureDetail";
+import TaskDetail from "./TaskDetail/TaskDetail";
 
 export const Views = {
     LoginScreen: Login,
     HomeScreen: Home,
     PicturesScreen: Pictures,
     TasksScreen: Tasks,
-    PictureDetailScreen: PictureDetail
+    PictureDetailScreen: PictureDetail,
+    TaskDetailScreen: TaskDetail
 };

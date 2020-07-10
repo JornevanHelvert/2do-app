@@ -4,7 +4,8 @@ import Reducers from "./reducers/index";
 
 const reducers = combineReducers({
     user: Reducers.authReducer,
-    image: Reducers.imageReducer
+    image: Reducers.imageReducer,
+    task: Reducers.taskReducer
 });
 
 const store = createStore(reducers, applyMiddleware(thunk));

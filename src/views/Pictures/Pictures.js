@@ -7,6 +7,7 @@ import {MaterialUI} from "../../constants/UI/material-components";
 import {downloadImages, imageForDetail, uploadImage} from "../../redux/actions/imageActions";
 import LoadingGif from "../../assets/gifs/loading.gif";
 import {BackButton} from "../../components/index";
+import Loading from "../../components/Loading/Loading";
 
 const Pictures = () => {
     const history = useHistory();
@@ -40,14 +41,6 @@ const Pictures = () => {
         )
     };
 
-    const renderLoading = () => {
-        return (
-            <MaterialUI.Grid container justify="center" spacing={0}>
-                <img className={styles.loadingGif} src={LoadingGif} alt="Loading..."/>
-            </MaterialUI.Grid>
-        )
-    };
-
     const upload = (e) => dispatch(uploadImage(e.target.files));
 
     return (
@@ -61,7 +54,7 @@ const Pictures = () => {
                     </div>
                 </MaterialUI.Grid>
             </MaterialUI.Grid>
-            {imageUrls.length > 0 ? renderImage() : renderLoading()}
+            {imageUrls.length > 0 ? renderImage() : <Loading />}
         </div>
     )
 };
