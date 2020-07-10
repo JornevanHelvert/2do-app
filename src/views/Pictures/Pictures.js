@@ -5,14 +5,13 @@ import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {MaterialUI} from "../../constants/UI/material-components";
 import {downloadImages, imageForDetail, uploadImage} from "../../redux/actions/imageActions";
-import LoadingGif from "../../assets/gifs/loading.gif";
 import {BackButton} from "../../components/index";
 import Loading from "../../components/Loading/Loading";
 
 const Pictures = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const {imageUrls, nextPageToken} = useSelector(state => ({
+    const {imageUrls} = useSelector(state => ({
         imageUrls: state.image.images,
         nextPageToken: state.image.nextPageToken
     }));

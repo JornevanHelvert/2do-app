@@ -38,7 +38,7 @@ export const updateTaskStatusInFirestore = async (task) => {
 export const writeFcmTokenToDb = async ({user, token}) => {
     await db.collection(QueryConstants.TOKEN_COLLECTION)
         .doc(user)
-        .set(({
+        .set({
             token
-        }))
+        }, {merge: true})
 };

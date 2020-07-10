@@ -13,3 +13,7 @@ export const askNotificationPermission = async (user) => {
         console.log('An error occurred while retrieving token. ', err);
     });
 };
+
+export const setRefreshTokenListener = async (user) => messaging.onTokenRefresh(() => {
+    askNotificationPermission(user)
+});

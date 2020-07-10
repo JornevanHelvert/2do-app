@@ -18,7 +18,7 @@ const Tasks = () => {
 
     useEffect(() => {
         dispatch(getTasks(userFirstName))
-    }, [dispatch]);
+    }, [dispatch, userFirstName]);
 
     const redirectToTaskDetail = async (t) => {
         await dispatch(setTaskForDetail(t));

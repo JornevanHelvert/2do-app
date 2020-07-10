@@ -123,5 +123,6 @@ sketch
 build
 firebase.json
 src/assets
+public/firebase-messaging-sw.js
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,react

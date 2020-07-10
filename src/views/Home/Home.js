@@ -6,7 +6,10 @@ import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {logout} from "../../redux/actions/userActions";
 import {DialogComponent} from "../../components/index";
-import {askNotificationPermission} from "../../services/firebase/fcm/cloudMessaging.service";
+import {
+    askNotificationPermission,
+    setRefreshTokenListener
+} from "../../services/firebase/fcm/cloudMessaging.service";
 
 const Home = () => {
     const {firstName} = useSelector(state => ({
@@ -27,7 +30,8 @@ const Home = () => {
 
     useEffect(() => {
         askNotificationPermission(firstName).then();
-    }, []);
+        setRefreshTokenListener(firstName).then();
+    }, [firstName]);
 
     return (
         <div className={styles.Home}>
