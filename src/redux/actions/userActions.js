@@ -1,4 +1,4 @@
-import {doSignInWithGoogle, doSignOut} from "../../constants/firebase/firebase";
+import {doSignInWithGoogle, doSignOut} from "../../services/firebase/auth/firebaseAuth.service";
 import ActionTypes from "../../constants/redux/ActionTypes";
 
 const setLoginSuccess = ({token, firstName, email}) => ({

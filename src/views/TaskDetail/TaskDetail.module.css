@@ -1,3 +1,44 @@
 .TaskDetail {
     color: white;
+    text-align: center;
+}
+
+.row {
+    margin-top: 10%;
+}
+
+.row button {
+    background: transparent;
+    outline: none;
+    margin-bottom: 5%;
+    height: 50px;
+    width: 70%;
+    font-size: 15pt;
+    font-weight: bold;
+    border: solid 3px;
+}
+
+button:active {
+    outline: none;
+}
+
+.markAsDone {
+    color: green;
+    border-color: green;
+}
+
+.markAsNotDone {
+    color: red;
+    border-color: red;
+}
+
+.buttonContainer {
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+
+@media (min-width: 1000px) {
+    .row {
+        margin-top: 5%;
+    }
 }

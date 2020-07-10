@@ -1,5 +1,5 @@
-import {bucket} from "../../constants/firebase/firebase";
 import ActionTypes from "../../constants/redux/ActionTypes";
+import {getImages, uploadImageToFirebase} from "../../services/firebase/storage/cloudStorage.service";
 
 const setDownloadImages = ({images, nextPageToken}) => ({
     type: ActionTypes.DOWNLOAD_IMAGES,
@@ -19,15 +19,9 @@ const setImageUploadSuccess = imageUrl => ({
 
 export const downloadImages = () => async dispatch => {
   try {
-      const images = await bucket.list({maxResults: 12});
-      const imageUrls = [];
+      const {images, nextPageToken} = await getImages();
 
-      for (let i = 0; i < images.items.length; i++) {
-          const url = await bucket.child(images.items[i].name).getDownloadURL();
-          imageUrls.push(url);
-      }
-
-      dispatch(setDownloadImages({images: imageUrls, nextPageToken: images.nextPageToken}));
+      dispatch(setDownloadImages({images, nextPageToken}));
   } catch (e) {
       console.log(e);
   }
@@ -44,9 +38,7 @@ export const imageForDetail = (imageUrl) => async dispatch => {
 export const uploadImage = (imageList) => async dispatch => {
     try {
         if (imageList.length > 0) {
-            const imageRef = bucket.child(imageList[0].name);
-            await imageRef.put(imageList[0]);
-            const imageUrl = await imageRef.getDownloadURL();
+            const imageUrl = await uploadImageToFirebase(imageList);
             dispatch(setImageUploadSuccess(imageUrl));
         }
     } catch (e) {

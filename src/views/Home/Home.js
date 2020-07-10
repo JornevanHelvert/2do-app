@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Home.module.css';
 import {useSelector, useDispatch} from "react-redux";
 import {MaterialUI} from "../../constants/UI/material-components";
@@ -6,6 +6,7 @@ import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {logout} from "../../redux/actions/userActions";
 import {DialogComponent} from "../../components/index";
+import {askNotificationPermission} from "../../services/firebase/fcm/cloudMessaging.service";
 
 const Home = () => {
     const {firstName} = useSelector(state => ({
@@ -23,6 +24,10 @@ const Home = () => {
         await dispatch(logout());
         history.push(FRONTEND_ROUTES.LOGIN);
     };
+
+    useEffect(() => {
+        askNotificationPermission();
+    }, []);
 
     return (
         <div className={styles.Home}>

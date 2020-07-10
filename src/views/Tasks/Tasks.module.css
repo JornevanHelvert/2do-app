@@ -39,6 +39,13 @@
     font-weight: bold;
 }
 
+.addButton {
+    color: white;
+    cursor: pointer;
+    padding: 1% 20%;
+    text-align: right;
+}
+
 @media (min-width: 1000px) {
     .taskContainer {
         padding-left: 20%;

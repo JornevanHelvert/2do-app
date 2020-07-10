@@ -6,7 +6,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import {login} from "../../redux/actions/userActions";
 import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
-import {checkAuth} from "../../constants/firebase/firebase";
+import {checkAuth} from "../../services/firebase/auth/firebaseAuth.service";
 
 const Login = () => {
     const dispatch = useDispatch();
