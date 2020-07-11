@@ -2,7 +2,7 @@ import ActionTypes from "../../constants/redux/ActionTypes";
 
 const initialState = {
     token: '',
-    firstName: '',
+    username: '',
     email: ''
 };
 
@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 token: action.token,
-                firstName: action.firstName,
+                username: action.username,
                 email: action.email
             }
         }
@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 token: '',
-                firstName: '',
+                username: '',
                 email: ''
             }
         }

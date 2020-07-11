@@ -12,8 +12,8 @@ import {
 } from "../../services/firebase/fcm/cloudMessaging.service";
 
 const Home = () => {
-    const {firstName} = useSelector(state => ({
-        firstName: state.user.firstName
+    const {username} = useSelector(state => ({
+        username: state.user.username
     }));
 
     const history = useHistory();
@@ -29,13 +29,13 @@ const Home = () => {
     };
 
     useEffect(() => {
-        askNotificationPermission(firstName).then();
-        setRefreshTokenListener(firstName).then();
-    }, [firstName]);
+        askNotificationPermission(username).then();
+        setRefreshTokenListener(username).then();
+    }, [username]);
 
     return (
         <div className={styles.Home}>
-            <h1>Welkom {firstName}</h1>
+            <h1>Welkom {username}</h1>
             <MaterialUI.Grid container justify="space-evenly" spacing={0}>
                 <MaterialUI.Grid item xs={6} className={styles.centerAlign}>
                     <div className={styles.card} onClick={redirectToTasks}>

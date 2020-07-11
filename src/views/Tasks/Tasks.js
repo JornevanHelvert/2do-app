@@ -11,14 +11,14 @@ import {useHistory} from "react-router";
 const Tasks = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const {userFirstName, tasks} = useSelector(state => ({
-        userFirstName: state.user.firstName,
+    const {userusername, tasks} = useSelector(state => ({
+        userusername: state.user.username,
         tasks: state.task.tasks
     }));
 
     useEffect(() => {
-        dispatch(getTasks(userFirstName))
-    }, [dispatch, userFirstName]);
+        dispatch(getTasks(userusername))
+    }, [dispatch, userusername]);
 
     const redirectToTaskDetail = async (t) => {
         await dispatch(setTaskForDetail(t));

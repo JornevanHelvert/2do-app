@@ -1,10 +1,10 @@
 import {doSignInWithGoogle, doSignOut} from "../../services/firebase/auth/firebaseAuth.service";
 import ActionTypes from "../../constants/redux/ActionTypes";
 
-const setLoginSuccess = ({token, firstName, email}) => ({
+const setLoginSuccess = ({token, username, email}) => ({
     type: ActionTypes.LOGIN_SUCCESS,
     token,
-    firstName,
+    username,
     email
 });
 
@@ -15,10 +15,10 @@ const setLogoutSuccess = () => ({
 export const login = () => async dispatch => {
     try {
         const result = await doSignInWithGoogle();
-        const userFirstname = result.user.displayName.substring(0, result.user.displayName.indexOf(' '));
+        const username = result.user.displayName;
         dispatch(setLoginSuccess({
             token: result.credential.accessToken,
-            firstName: userFirstname,
+            username: username,
             email: result.user.email
         }));
     } catch (e) {
@@ -29,10 +29,10 @@ export const login = () => async dispatch => {
 export const restoreSession = (user) => async dispatch => {
     try {
         if (user) {
-            const userFirstname = user.displayName.substring(0, user.displayName.indexOf(' '));
+            const username = user.displayName;
             dispatch(setLoginSuccess({
                 token: user.refreshToken,
-                firstName: userFirstname,
+                username,
                 email: user.email
             }));
         }

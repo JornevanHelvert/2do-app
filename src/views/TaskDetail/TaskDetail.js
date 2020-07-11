@@ -6,15 +6,18 @@ import {MaterialUI} from "../../constants/UI/material-components";
 import {BackButton} from "../../components";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {updateTaskStatus} from "../../redux/actions/taskActions";
+import {sendMessageTaskCompleted} from "../../services/firebase/fcm/cloudMessaging.service";
 
 const TaskDetail = () => {
     const dispatch = useDispatch();
-    const {task} = useSelector(state => ({
-        task: state.task.taskForDetail
+    const {task, accessToken} = useSelector(state => ({
+        task: state.task.taskForDetail,
+        accessToken: state.user.token
     }));
 
     const updateStatus = () => {
-        dispatch(updateTaskStatus(task))
+        dispatch(updateTaskStatus(task));
+        sendMessageTaskCompleted({accessToken, task});
     };
 
     return (

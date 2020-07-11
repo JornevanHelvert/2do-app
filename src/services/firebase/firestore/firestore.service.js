@@ -5,7 +5,7 @@ const db = firebase.firestore();
 
 export const getTasksFromFirestore = async (user) => {
     const snapshot = await db.collection(QueryConstants.TASKS_COLLECTION)
-        .where(QueryConstants.RECEIVER_FIELD, '==', user.toLowerCase())
+        .where(QueryConstants.RECEIVER_FIELD, '==', user)
         .get();
 
     const tasks = [];
@@ -42,3 +42,7 @@ export const writeFcmTokenToDb = async ({user, token}) => {
             token
         }, {merge: true})
 };
+
+export const getReceiverToken = async (receiver) => (
+    await db.collection(QueryConstants.TOKEN_COLLECTION).doc(receiver).get()
+).data().token;
