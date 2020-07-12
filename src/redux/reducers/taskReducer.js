@@ -3,6 +3,7 @@ import ActionTypes from "../../constants/redux/ActionTypes";
 const initialState = {
     tasks: [],
     taskForDetail: {},
+    tasksToManage: []
 };
 
 export default (state = initialState, action) => {
@@ -23,6 +24,12 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 tasks: [...state.tasks, action.task]
+            }
+        }
+        case ActionTypes.GET_TASKS_TO_MANAGE: {
+            return {
+                ...state,
+                tasksToManage: action.tasks
             }
         }
         default:

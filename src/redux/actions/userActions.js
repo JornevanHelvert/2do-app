@@ -59,7 +59,6 @@ export const logout = () => async dispatch => {
 export const getAllUsers = () => async dispatch => {
     try {
         const users = await getUsersFromFirestore();
-        console.log(users);
         dispatch(setAllUsersSuccess(users));
     } catch (e) {
         console.log(e);

@@ -3,13 +3,12 @@ import QueryConstants from "../../../constants/firebase/queryConstants";
 
 const db = firebase.firestore();
 
-export const getTasksFromFirestore = async (user) => {
-
+const getTasks = async () => {
     const snapshot = await db.collection(QueryConstants.TASKS_COLLECTION)
-        .where(QueryConstants.DUE_DATE_FIELD, '>=', Date.now())
-        .orderBy(QueryConstants.DUE_DATE_FIELD)
-        .limit(20)
-        .get();
+    .where(QueryConstants.DUE_DATE_FIELD, '>=', Date.now())
+    .orderBy(QueryConstants.DUE_DATE_FIELD)
+    .limit(20)
+    .get();
 
     const tasks = [];
 
@@ -21,12 +20,29 @@ export const getTasksFromFirestore = async (user) => {
         tasks.push(task);
     });
 
+    return tasks;
+};
+
+export const getTasksFromFirestore = async (user) => {
+    const tasks = await getTasks();
+
     if (tasks.length === 0) {
         tasks.push('Er zijn nog geen taken voor jou');
         return tasks;
     }
 
     return tasks.filter(t => t.Receiver === user);
+};
+
+export const getTasksToManageFromFirestore = async (user) => {
+    const tasks = await getTasks();
+
+    if (tasks.length === 0) {
+        tasks.push('Je hebt nog geen taken gemaakt');
+        return tasks;
+    }
+
+    return tasks.filter(t => t.Creator === user);
 };
 
 export const updateTaskStatusInFirestore = async (task) => {

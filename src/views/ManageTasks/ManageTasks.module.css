@@ -1,0 +1,55 @@
+.ManageTasks {
+    color: white;
+}
+
+.buttonContainer {
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+
+.card {
+    background-color: white;
+    color: #2c2c2c;
+    min-height: 120px;
+    min-width: 130px;
+    max-width: 250px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 2% !important;
+}
+
+.taskContainer {
+    padding: 5% 3%;
+    margin-right: 5%;
+}
+
+.status {
+    padding-top: 10%;
+    font-weight: bold;
+}
+
+.toDo {
+    color: red;
+}
+
+.done {
+    color: green;
+}
+
+.header {
+    font-weight: bold;
+}
+
+.addButton {
+    color: white;
+    cursor: pointer;
+    padding: 1% 20%;
+    text-align: right;
+}
+
+@media (min-width: 1000px) {
+    .taskContainer {
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+}

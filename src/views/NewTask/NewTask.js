@@ -6,6 +6,8 @@ import {getAllUsers} from "../../redux/actions/userActions";
 import {createTask} from "../../redux/actions/taskActions";
 import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
+import {BackButton} from "../../components";
+import {sendMessageTaskCreated} from "../../services/firebase/fcm/cloudMessaging.service";
 
 const NewTask = () => {
     const dispatch = useDispatch();
@@ -20,7 +22,7 @@ const NewTask = () => {
     const [date, setDate] = useState(new Date());
     const [receiver, setReceiver] = useState('Ceylan Ools');
 
-    const addTask = () => {
+    const addTask = async () => {
         dispatch(createTask({title, description, date, receiver, currentUser}));
         history.push(FRONTEND_ROUTES.HOME);
     };
@@ -32,6 +34,9 @@ const NewTask = () => {
     return (
         <div className={styles.NewTask}>
             <MaterialUI.Grid container justify="center">
+                <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.buttonContainer}>
+                    <BackButton url={FRONTEND_ROUTES.HOME}/>
+                </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
                     <h1 className={styles.header}>Maak een nieuwe taak</h1>
                 </MaterialUI.Grid>

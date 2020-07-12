@@ -1,9 +1,10 @@
 import ActionTypes from "../../constants/redux/ActionTypes";
 import {
     createTaskInFirestore,
-    getTasksFromFirestore,
+    getTasksFromFirestore, getTasksToManageFromFirestore,
     updateTaskStatusInFirestore
 } from "../../services/firebase/firestore/firestore.service";
+import {sendMessageTaskCreated} from "../../services/firebase/fcm/cloudMessaging.service";
 
 const getTasksSuccess = (tasks) => ({
     type: ActionTypes.GET_ALL_TASKS_FOR_USER,
@@ -20,10 +21,24 @@ const setCreateTaskSuccess = (task) => ({
     task
 });
 
+const getTasksToManageSuccess = (tasks) => ({
+    type: ActionTypes.GET_TASKS_TO_MANAGE,
+    tasks
+});
+
 export const getTasks = (user) => async dispatch => {
     try {
         const tasks = await getTasksFromFirestore(user);
         dispatch(getTasksSuccess(tasks));
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const getTasksToManage = (user) => async dispatch => {
+    try {
+        const tasks = await getTasksToManageFromFirestore(user);
+        dispatch(getTasksToManageSuccess(tasks));
     } catch (e) {
         console.log(e);
     }
@@ -50,6 +65,7 @@ export const updateTaskStatus = (task) => async dispatch => {
 export const createTask = ({receiver, title, description, date, currentUser}) => async dispatch => {
     try {
         const task = await createTaskInFirestore({receiver, title, description, date, currentUser});
+        await sendMessageTaskCreated(task);
         dispatch(setCreateTaskSuccess(task));
     } catch (e) {
         console.log(e);

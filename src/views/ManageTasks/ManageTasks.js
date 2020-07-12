@@ -1,34 +1,28 @@
 import React, {useEffect} from 'react';
-import styles from './Tasks.module.css';
+import styles from './ManageTasks.module.css';
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router";
+import {getTasksToManage} from "../../redux/actions/taskActions";
+import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {MaterialUI} from "../../constants/UI/material-components";
 import {BackButton} from "../../components";
-import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import Loading from "../../components/Loading/Loading";
-import {useDispatch, useSelector} from "react-redux";
-import {getTasks, setTaskForDetail} from "../../redux/actions/taskActions";
-import {useHistory} from "react-router";
 
-const Tasks = () => {
+const ManageTasks = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const {username, tasks} = useSelector(state => ({
         username: state.user.username,
-        tasks: state.task.tasks
+        tasks: state.task.tasksToManage
     }));
 
     useEffect(() => {
-        dispatch(getTasks(username))
+        dispatch(getTasksToManage(username))
     }, [dispatch, username]);
-
-    const redirectToTaskDetail = async (t) => {
-        await dispatch(setTaskForDetail(t));
-        history.push(FRONTEND_ROUTES.TASK_DETAILS);
-    };
 
     const renderTask = (t) => {
         return (
-            <MaterialUI.Grid item xs={5} className={styles.card} key={t.id}
-                             onClick={() => redirectToTaskDetail(t)}>
+            <MaterialUI.Grid item xs={5} className={styles.card} key={t.id}>
                 <p className={styles.header}>{t.Title.toUpperCase()}</p>
                 <p className={`${styles.status} ${t.isDone ? styles.done : styles.toDo}`}>{t.isDone ? 'Voltooid' : 'Te Doen'}</p>
             </MaterialUI.Grid>
@@ -49,13 +43,13 @@ const Tasks = () => {
     };
 
     return (
-        <div className={styles.Tasks}>
+        <div className={styles.ManageTasks}>
             <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.buttonContainer}>
                 <BackButton url={FRONTEND_ROUTES.HOME}/>
             </MaterialUI.Grid>
             {tasks.length > 0 ? renderTasks() : <Loading/>}
         </div>
     );
-}
+};
 
-export default Tasks;
+export default ManageTasks;
