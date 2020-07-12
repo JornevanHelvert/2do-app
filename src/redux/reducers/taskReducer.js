@@ -19,6 +19,12 @@ export default (state = initialState, action) => {
                 taskForDetail: action.task
             }
         }
+        case ActionTypes.NEW_TASK: {
+            return {
+                ...state,
+                tasks: [...state.tasks, action.task]
+            }
+        }
         default:
             return {
                 ...state

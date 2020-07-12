@@ -1,5 +1,6 @@
 import {doSignInWithGoogle, doSignOut} from "../../services/firebase/auth/firebaseAuth.service";
 import ActionTypes from "../../constants/redux/ActionTypes";
+import {getUsersFromFirestore} from "../../services/firebase/firestore/firestore.service";
 
 const setLoginSuccess = ({token, username, email}) => ({
     type: ActionTypes.LOGIN_SUCCESS,
@@ -10,6 +11,11 @@ const setLoginSuccess = ({token, username, email}) => ({
 
 const setLogoutSuccess = () => ({
     type: ActionTypes.LOGOUT_USER
+});
+
+const setAllUsersSuccess = (users) => ({
+    type: ActionTypes.GET_ALL_USERS,
+    users
 });
 
 export const login = () => async dispatch => {
@@ -45,6 +51,16 @@ export const logout = () => async dispatch => {
     try {
         await doSignOut();
         dispatch(setLogoutSuccess());
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const getAllUsers = () => async dispatch => {
+    try {
+        const users = await getUsersFromFirestore();
+        console.log(users);
+        dispatch(setAllUsersSuccess(users));
     } catch (e) {
         console.log(e);
     }

@@ -22,6 +22,7 @@ const Home = () => {
 
     const redirectToPictures = () => history.push(FRONTEND_ROUTES.PICTURES);
     const redirectToTasks = () => history.push(FRONTEND_ROUTES.TASKS);
+    const redirectToNewTask = () => history.push(FRONTEND_ROUTES.NEW_TASK);
     const signOut = async () => {
         setOpen(false);
         await dispatch(logout());
@@ -43,7 +44,7 @@ const Home = () => {
                     </div>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={6}>
-                    <div className={styles.card}>
+                    <div className={styles.card} onClick={redirectToNewTask}>
                         <h1>Nieuwe taak</h1>
                     </div>
                 </MaterialUI.Grid>

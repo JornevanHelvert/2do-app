@@ -15,6 +15,7 @@
     max-width: 250px;
     cursor: pointer;
     text-align: center;
+    margin-top: 2% !important;
 }
 
 .taskContainer {

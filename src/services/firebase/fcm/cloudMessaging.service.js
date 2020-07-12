@@ -1,10 +1,16 @@
 import * as firebase from "firebase";
 import {getReceiverToken, writeFcmTokenToDb} from "../firestore/firestore.service";
+import cloudFunctionUrls from "../../../constants/firebase/cloudFunctionUrls";
 
-const messaging = firebase.messaging();
-messaging.usePublicVapidKey(process.env.REACT_APP_FCM_TOKEN);
+let messaging = null;
+
+if (firebase.messaging.isSupported()) {
+    messaging = firebase.messaging();
+    messaging.usePublicVapidKey(process.env.REACT_APP_FCM_TOKEN);
+}
 
 export const askNotificationPermission = async (user) => {
+    if (!messaging) return;
     await messaging.getToken().then((currentToken) => {
         if (currentToken) {
             writeFcmTokenToDb({user, token: currentToken});
@@ -14,40 +20,24 @@ export const askNotificationPermission = async (user) => {
     });
 };
 
-export const setRefreshTokenListener = async (user) => messaging.onTokenRefresh(() => {
-    askNotificationPermission(user)
-});
+export const setRefreshTokenListener = async (user) => {
+    if (!messaging) return;
+    messaging.onTokenRefresh(() => {
+        askNotificationPermission(user)
+    });
+};
 
-export const sendMessageTaskCompleted = async ({accessToken, task}) => {
+export const sendMessageTaskStatusUpdated = async (task) => {
     const token = await getReceiverToken(task.Creator);
 
-    console.log(token);
-    console.log(accessToken);
-
-    // fetch(`https://fcm.googleapis.com/v1/projects/${process.env.REACT_APP_PROJECT_ID}/messages:send`, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${accessToken}`
-    //     },
-    //     body: JSON.stringify({
-    //         "message": {
-    //             "token": token,
-    //             "notification": {
-    //                 "title": "Taak voltooid",
-    //                 "body": `${task.title} is voltooid door ${task.Receiver}`
-    //             },
-    //             "webpush": {
-    //                 "headers": {
-    //                     "Urgency": "high"
-    //                 },
-    //                 "notification": {
-    //                     "body": `${task.title} is voltooid door ${task.Receiver}`,
-    //                     "requireInteraction": "true",
-    //                     "badge": "/logo512.png"
-    //                 }
-    //             }
-    //         }
-    //     })
-    // });
+    await fetch(cloudFunctionUrls.TASK_STATUS_UPDATED, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            token,
+            task
+        })
+    });
 };

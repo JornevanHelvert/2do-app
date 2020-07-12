@@ -4,8 +4,11 @@ import QueryConstants from "../../../constants/firebase/queryConstants";
 const db = firebase.firestore();
 
 export const getTasksFromFirestore = async (user) => {
+
     const snapshot = await db.collection(QueryConstants.TASKS_COLLECTION)
-        .where(QueryConstants.RECEIVER_FIELD, '==', user)
+        .where(QueryConstants.DUE_DATE_FIELD, '>=', Date.now())
+        .orderBy(QueryConstants.DUE_DATE_FIELD)
+        .limit(20)
         .get();
 
     const tasks = [];
@@ -13,18 +16,17 @@ export const getTasksFromFirestore = async (user) => {
     await snapshot.forEach(t => {
         const task = {
             ...t.data(),
-            CreationDate: t.data().CreationDate.toDate(),
-            DueDate: t.data().DueDate.toDate(),
             id: t.id
         };
         tasks.push(task);
     });
 
     if (tasks.length === 0) {
-        tasks.push('Er zijn nog geen taken voor jou')
+        tasks.push('Er zijn nog geen taken voor jou');
+        return tasks;
     }
 
-    return tasks;
+    return tasks.filter(t => t.Receiver === user);
 };
 
 export const updateTaskStatusInFirestore = async (task) => {
@@ -46,3 +48,41 @@ export const writeFcmTokenToDb = async ({user, token}) => {
 export const getReceiverToken = async (receiver) => (
     await db.collection(QueryConstants.TOKEN_COLLECTION).doc(receiver).get()
 ).data().token;
+
+export const getUsersFromFirestore = async () => {
+    const snapshot = await db.collection(QueryConstants.USERS_COLLECTION).get();
+
+    const users = [];
+
+    snapshot.forEach(u => {
+        const user = {
+            ...u.data(),
+            id: u.id
+        };
+
+        users.push(user);
+    });
+
+    return users.sort((u1, u2) => {
+        if (u1.nickname < u2.nickname) {
+            return -1;
+        }
+        return 0;
+    });
+};
+
+export const createTaskInFirestore = async ({receiver, title, description, date, currentUser}) => {
+    const task = {
+        CreationDate: new Date(),
+        Creator: currentUser,
+        Description: description,
+        DueDate: date,
+        Receiver: receiver,
+        Title: title,
+        isDone: false
+    };
+
+    await db.collection(QueryConstants.TASKS_COLLECTION).doc().set(task);
+
+    return task;
+};
