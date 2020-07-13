@@ -20,6 +20,7 @@
     .image {
         margin-top: 10%;
         max-height: 700px;
+        max-width: 500px;
     }
 }
 
@@ -27,6 +28,7 @@
     .image {
         margin-top: 10%;
         max-height: 550px;
+        max-width: 350px;
     }
 }
 
@@ -34,5 +36,6 @@
     .image {
         margin-top: 10%;
         max-height: 500px;
+        max-width: 300px;
     }
 }
