@@ -6,9 +6,6 @@ import {MaterialUI} from "../../constants/UI/material-components";
 import {BackButton} from "../../components";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {updateTaskStatus} from "../../redux/actions/taskActions";
-import {
-    sendMessageTaskStatusUpdated
-} from "../../services/firebase/fcm/cloudMessaging.service";
 
 const TaskDetail = () => {
     const dispatch = useDispatch();
@@ -18,7 +15,6 @@ const TaskDetail = () => {
 
     const updateStatus = async () => {
         dispatch(updateTaskStatus(task));
-        await sendMessageTaskStatusUpdated(task);
     };
 
     return (

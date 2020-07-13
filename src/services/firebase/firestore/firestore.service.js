@@ -4,8 +4,11 @@ import QueryConstants from "../../../constants/firebase/queryConstants";
 const db = firebase.firestore();
 
 const getTasks = async () => {
+    const today = new Date();
+    const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+
     const snapshot = await db.collection(QueryConstants.TASKS_COLLECTION)
-    .where(QueryConstants.DUE_DATE_FIELD, '>=', Date.now())
+    .where(QueryConstants.DUE_DATE_FIELD, '>=', yesterday.getTime())
     .orderBy(QueryConstants.DUE_DATE_FIELD)
     .limit(20)
     .get();
@@ -89,7 +92,7 @@ export const getUsersFromFirestore = async () => {
 
 export const createTaskInFirestore = async ({receiver, title, description, date, currentUser}) => {
     const task = {
-        CreationDate: new Date(),
+        CreationDate: Date.now(),
         Creator: currentUser,
         Description: description,
         DueDate: date,
@@ -99,6 +102,20 @@ export const createTaskInFirestore = async ({receiver, title, description, date,
     };
 
     await db.collection(QueryConstants.TASKS_COLLECTION).doc().set(task);
+
+    return task;
+};
+
+export const updateTaskInFirestore = async ({receiver, title, description, date, task}) => {
+    task = {
+        ...task,
+        Description: description,
+        DueDate: date,
+        Receiver: receiver,
+        Title: title,
+    };
+
+    await db.collection(QueryConstants.TASKS_COLLECTION).doc(task.id).set(task);
 
     return task;
 };

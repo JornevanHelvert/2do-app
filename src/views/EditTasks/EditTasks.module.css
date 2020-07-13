@@ -1,0 +1,37 @@
+.EditTasks {
+    color: white;
+}
+
+.alignment {
+    text-align: center;
+    padding-bottom: 5%;
+}
+
+.input {
+    width: 90%;
+    font-size: 12pt;
+    margin-right: 10%;
+}
+
+.label {
+    padding-left: 5%;
+}
+
+.button {
+    background-color: transparent;
+    color: green;
+    border: green solid 3px;
+    font-weight: bold;
+    width: 80%;
+    height: 30px;
+    margin-top: 10%;
+}
+
+.header {
+    margin-bottom: 10%;
+}
+
+.buttonContainer {
+    margin-top: 2%;
+    margin-bottom: 1%;
+}

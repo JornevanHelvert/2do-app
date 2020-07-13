@@ -1,10 +1,10 @@
 import ActionTypes from "../../constants/redux/ActionTypes";
 import {
     createTaskInFirestore,
-    getTasksFromFirestore, getTasksToManageFromFirestore,
+    getTasksFromFirestore, getTasksToManageFromFirestore, updateTaskInFirestore,
     updateTaskStatusInFirestore
 } from "../../services/firebase/firestore/firestore.service";
-import {sendMessageTaskCreated} from "../../services/firebase/fcm/cloudMessaging.service";
+import {sendMessageTaskCreated, sendMessageTaskStatusUpdated} from "../../services/firebase/fcm/cloudMessaging.service";
 
 const getTasksSuccess = (tasks) => ({
     type: ActionTypes.GET_ALL_TASKS_FOR_USER,
@@ -16,6 +16,11 @@ const setTaskForDetailSuccess = (task) => ({
     task
 });
 
+const setTaskToEditSuccess = (task) => ({
+    type: ActionTypes.SET_TASK_TO_EDIT,
+    task
+});
+
 const setCreateTaskSuccess = (task) => ({
     type: ActionTypes.NEW_TASK,
     task
@@ -24,6 +29,11 @@ const setCreateTaskSuccess = (task) => ({
 const getTasksToManageSuccess = (tasks) => ({
     type: ActionTypes.GET_TASKS_TO_MANAGE,
     tasks
+});
+
+const taskUpdateSuccess = task => ({
+    type: ActionTypes.TASK_UPDATE_SUCCESS,
+    task
 });
 
 export const getTasks = (user) => async dispatch => {
@@ -56,6 +66,7 @@ export const updateTaskStatus = (task) => async dispatch => {
     try {
         await updateTaskStatusInFirestore(task);
         task = {...task, isDone: !task.isDone};
+        await sendMessageTaskStatusUpdated(task);
         dispatch(setTaskForDetailSuccess(task));
     } catch (e) {
         console.log(e);
@@ -70,5 +81,21 @@ export const createTask = ({receiver, title, description, date, currentUser}) =>
     } catch (e) {
         console.log(e);
     }
-}
-;
+};
+
+export const setTaskToEdit = (task) => async dispatch => {
+    try {
+        dispatch(setTaskToEditSuccess(task));
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const updateTask = ({title, description, date, receiver, task}) => async dispatch => {
+    try {
+        task = await updateTaskInFirestore({title, description, date, receiver, task});
+        await dispatch(taskUpdateSuccess(task));
+    } catch (e) {
+        console.log(e);
+    }
+};

@@ -19,8 +19,11 @@ export const MainNavigator = () => {
             <PrivateRoute path={FRONTEND_ROUTES.PICTURES} component={Views.PicturesScreen} authenticated={authToken}/>
             <PrivateRoute path={FRONTEND_ROUTES.TASK_DETAILS} component={Views.TaskDetailScreen}
                           authenticated={authToken}/>
+            <PrivateRoute path={FRONTEND_ROUTES.EDIT_TASKS} component={Views.EditTasksScreen}
+                          authenticated={authToken}/>
             <PrivateRoute path={FRONTEND_ROUTES.NEW_TASK} component={Views.NewTaskScreen} authenticated={authToken}/>
-            <PrivateRoute path={FRONTEND_ROUTES.MANAGE_TASKS} component={Views.ManageTasksScreen} authenticated={authToken} />
+            <PrivateRoute path={FRONTEND_ROUTES.MANAGE_TASKS} component={Views.ManageTasksScreen}
+                          authenticated={authToken}/>
             <PrivateRoute path={FRONTEND_ROUTES.TASKS} component={Views.TasksScreen} authenticated={authToken}/>
         </Switch>
     );

@@ -1,29 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import styles from './NewTask.module.css';
+import styles from './EditTasks.module.css';
 import {MaterialUI} from "../../constants/UI/material-components";
-import {useDispatch, useSelector} from "react-redux";
-import {getAllUsers} from "../../redux/actions/userActions";
-import {createTask} from "../../redux/actions/taskActions";
-import {useHistory} from "react-router";
-import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {BackButton} from "../../components";
+import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router";
+import {updateTask} from "../../redux/actions/taskActions";
+import {getAllUsers} from "../../redux/actions/userActions";
+import moment from "moment";
 
-const NewTask = () => {
+const EditTasks = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const {users, currentUser} = useSelector(state => ({
+    const {users, task} = useSelector(state => ({
         users: state.user.users,
-        currentUser: state.user.username
+        task: state.task.taskToEdit
     }));
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState(new Date());
-    const [receiver, setReceiver] = useState('Ceylan Ools');
+    const [title, setTitle] = useState(task.Title);
+    const [description, setDescription] = useState(task.Description);
+    const [date, setDate] = useState(new Date(task.DueDate));
+    const [receiver, setReceiver] = useState(task.Receiver);
 
-    const addTask = async () => {
-        dispatch(createTask({title, description, date, receiver, currentUser}));
-        history.push(FRONTEND_ROUTES.HOME);
+    const update = async () => {
+        await dispatch(updateTask({title, description, date, receiver, task}));
+        history.push(FRONTEND_ROUTES.MANAGE_TASKS);
     };
 
     useEffect(() => {
@@ -31,19 +32,20 @@ const NewTask = () => {
     }, [dispatch]);
 
     return (
-        <div className={styles.NewTask}>
+        <div className={styles.EditTasks}>
             <MaterialUI.Grid container justify="center">
                 <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.buttonContainer}>
-                    <BackButton url={FRONTEND_ROUTES.HOME}/>
+                    <BackButton url={FRONTEND_ROUTES.MANAGE_TASKS}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
-                    <h1 className={styles.header}>Maak een nieuwe taak</h1>
+                    <h1 className={styles.header}>Bewerk de taak</h1>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={4} className={styles.label}>
                     <label>Voor*: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
-                    <select name="reciever" id="reciever" className={styles.input} onChange={(e) => setReceiver(e.target.value)}>
+                    <select name="reciever" id="reciever" className={styles.input} value={receiver}
+                            onChange={(e) => setReceiver(e.target.value)}>
                         {users.map(u => {
                             return <option value={u.name} key={u.id}>{u.nickname}</option>
                         })}
@@ -53,26 +55,29 @@ const NewTask = () => {
                     <label>Titel: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
-                    <input type="text" className={styles.input} onChange={(e) => setTitle(e.target.value)}/>
+                    <input type="text" className={styles.input} value={title}
+                           onChange={(e) => setTitle(e.target.value)}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={4} className={styles.label}>
                     <label>Extra info: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
-                    <input type="text" className={styles.input} onChange={(e) => setDescription(e.target.value)}/>
+                    <input type="text" className={styles.input} value={description}
+                           onChange={(e) => setDescription(e.target.value)}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={4} className={styles.label}>
                     <label>Datum: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
-                    <input type="date" className={styles.input} onChange={(e) => setDate(new Date(e.target.value).getTime())}/>
+                    <input type="date" className={styles.input} value={moment(date).format('YYYY-MM-DD')}
+                           onChange={(e) => setDate(new Date(e.target.value).getTime())}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
-                    <button className={styles.button} onClick={addTask}>Maak aan</button>
+                    <button className={styles.button} onClick={update}>Opslaan</button>
                 </MaterialUI.Grid>
             </MaterialUI.Grid>
         </div>
     );
 };
 
-export default NewTask;
+export default EditTasks;

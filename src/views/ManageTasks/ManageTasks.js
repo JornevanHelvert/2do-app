@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import styles from './ManageTasks.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router";
-import {getTasksToManage} from "../../redux/actions/taskActions";
+import {getTasksToManage, setTaskToEdit} from "../../redux/actions/taskActions";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {MaterialUI} from "../../constants/UI/material-components";
 import {BackButton} from "../../components";
@@ -20,9 +20,14 @@ const ManageTasks = () => {
         dispatch(getTasksToManage(username))
     }, [dispatch, username]);
 
+    const redirectToEditTask = (task) => {
+        dispatch(setTaskToEdit(task));
+        history.push(FRONTEND_ROUTES.EDIT_TASKS);
+    };
+
     const renderTask = (t) => {
         return (
-            <MaterialUI.Grid item xs={5} className={styles.card} key={t.id}>
+            <MaterialUI.Grid item xs={5} className={styles.card} key={t.id} onClick={() => redirectToEditTask(t)}>
                 <p className={styles.header}>{t.Title.toUpperCase()}</p>
                 <p className={`${styles.status} ${t.isDone ? styles.done : styles.toDo}`}>{t.isDone ? 'Voltooid' : 'Te Doen'}</p>
             </MaterialUI.Grid>

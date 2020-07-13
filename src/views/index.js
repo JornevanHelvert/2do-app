@@ -6,6 +6,7 @@ import PictureDetail from "./PictureDetail/PictureDetail";
 import TaskDetail from "./TaskDetail/TaskDetail";
 import NewTask from "./NewTask/NewTask";
 import ManageTasks from "./ManageTasks/ManageTasks";
+import EditTasks from "./EditTasks/EditTasks";
 
 export const Views = {
     LoginScreen: Login,
@@ -15,5 +16,6 @@ export const Views = {
     PictureDetailScreen: PictureDetail,
     TaskDetailScreen: TaskDetail,
     NewTaskScreen: NewTask,
-    ManageTasksScreen: ManageTasks
+    ManageTasksScreen: ManageTasks,
+    EditTasksScreen: EditTasks
 };

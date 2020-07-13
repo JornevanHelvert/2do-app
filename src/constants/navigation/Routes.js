@@ -6,5 +6,6 @@ export const FRONTEND_ROUTES = {
     TASKS: '/tasks',
     TASK_DETAILS: '/task/detail',
     NEW_TASK: '/task/add',
-    MANAGE_TASKS: '/tasks/manage'
+    MANAGE_TASKS: '/tasks/manage',
+    EDIT_TASKS: '/tasks/edit',
 };
