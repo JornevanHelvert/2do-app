@@ -65,7 +65,7 @@ const Home = () => {
                     </div>
                 </MaterialUI.Grid>
             </MaterialUI.Grid>
-            <DialogComponent open={open} signOut={signOut} setOpenToClose={() => setOpen(false)} title="Afmelden"
+            <DialogComponent open={open} confirm={signOut} setOpenToClose={() => setOpen(false)} title="Afmelden"
                              content="Ben je zeker dat je wilt afmelden?"/>
         </div>
     );

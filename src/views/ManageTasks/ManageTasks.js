@@ -47,6 +47,8 @@ const ManageTasks = () => {
         )
     };
 
+    console.log(tasks);
+
     return (
         <div className={styles.ManageTasks}>
             <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.buttonContainer}>

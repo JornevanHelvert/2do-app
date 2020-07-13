@@ -5,13 +5,13 @@ const db = firebase.firestore();
 
 const getTasks = async () => {
     const today = new Date();
-    const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+    today.setHours(0, 0, 0, 0);
 
     const snapshot = await db.collection(QueryConstants.TASKS_COLLECTION)
-    .where(QueryConstants.DUE_DATE_FIELD, '>=', yesterday.getTime())
-    .orderBy(QueryConstants.DUE_DATE_FIELD)
-    .limit(20)
-    .get();
+        .where(QueryConstants.DUE_DATE_FIELD, '>=', today.getTime())
+        .orderBy(QueryConstants.DUE_DATE_FIELD)
+        .limit(20)
+        .get();
 
     const tasks = [];
 
@@ -27,25 +27,30 @@ const getTasks = async () => {
 };
 
 export const getTasksFromFirestore = async (user) => {
-    const tasks = await getTasks();
+    await removeOldTasks();
+    const tasks = (
+        await getTasks()
+    ).filter(t => t.Receiver === user);
 
     if (tasks.length === 0) {
         tasks.push('Er zijn nog geen taken voor jou');
         return tasks;
     }
 
-    return tasks.filter(t => t.Receiver === user);
+    return tasks;
 };
 
 export const getTasksToManageFromFirestore = async (user) => {
-    const tasks = await getTasks();
+    const tasks = (
+        await getTasks()
+    ).filter(t => t.Creator === user);
 
     if (tasks.length === 0) {
         tasks.push('Je hebt nog geen taken gemaakt');
         return tasks;
     }
 
-    return tasks.filter(t => t.Creator === user);
+    return tasks
 };
 
 export const updateTaskStatusInFirestore = async (task) => {
@@ -118,4 +123,30 @@ export const updateTaskInFirestore = async ({receiver, title, description, date,
     await db.collection(QueryConstants.TASKS_COLLECTION).doc(task.id).set(task);
 
     return task;
+};
+
+export const removeTaskFromFirestore = async (task) => db.collection(QueryConstants.TASKS_COLLECTION).doc(task.id).delete();
+
+const removeOldTasks = async () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const lastRemoveDate = (
+        await db.collection(QueryConstants.TASKS_COLLECTION).doc(QueryConstants.LAST_REMOVE_DATE).get()
+    ).data().date;
+
+    if (lastRemoveDate && today.getTime() !== lastRemoveDate) {
+        const snapshot = await db.collection(QueryConstants.TASKS_COLLECTION)
+            .where(QueryConstants.DUE_DATE_FIELD, '<', today.getTime())
+            .get();
+
+        snapshot.forEach(t => {
+            console.log(t.id);
+            db.collection(QueryConstants.TASKS_COLLECTION).doc(t.id).delete();
+        });
+
+        db.collection(QueryConstants.TASKS_COLLECTION).doc(QueryConstants.LAST_REMOVE_DATE).set({
+            date: today.getTime()
+        });
+    }
 };

@@ -46,6 +46,20 @@ export default (state = initialState, action) => {
                 tasksToManage: state.tasks.map(t => t.id === action.task.id? action.task : t)
             }
         }
+        case ActionTypes.TASK_STATUS_UPDATED_SUCCESS: {
+            return {
+                ...state,
+                taskForDetail: action.task,
+                tasks: state.tasks.map(t => t.id === action.task.id? action.task : t)
+            }
+        }
+        case ActionTypes.REMOVE_TASK: {
+            return {
+                ...state,
+                taskToEdit: {},
+                tasksToManage: state.tasksToManage.filter(t => t.id !== action.task.id)
+            }
+        }
         default:
             return {
                 ...state

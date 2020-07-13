@@ -1,10 +1,14 @@
 import ActionTypes from "../../constants/redux/ActionTypes";
 import {
     createTaskInFirestore,
-    getTasksFromFirestore, getTasksToManageFromFirestore, updateTaskInFirestore,
+    getTasksFromFirestore, getTasksToManageFromFirestore, removeTaskFromFirestore, updateTaskInFirestore,
     updateTaskStatusInFirestore
 } from "../../services/firebase/firestore/firestore.service";
-import {sendMessageTaskCreated, sendMessageTaskStatusUpdated} from "../../services/firebase/fcm/cloudMessaging.service";
+import {
+    sendMessageTaskCreated,
+    sendMessageTaskDeleted,
+    sendMessageTaskStatusUpdated
+} from "../../services/firebase/fcm/cloudMessaging.service";
 
 const getTasksSuccess = (tasks) => ({
     type: ActionTypes.GET_ALL_TASKS_FOR_USER,
@@ -36,6 +40,16 @@ const taskUpdateSuccess = task => ({
     task
 });
 
+const taskStastusUpdatedSuccess = task => ({
+   type: ActionTypes.TASK_STATUS_UPDATED_SUCCESS,
+   task
+});
+
+const removeTaskSuccess = task => ({
+    type: ActionTypes.REMOVE_TASK,
+    task
+});
+
 export const getTasks = (user) => async dispatch => {
     try {
         const tasks = await getTasksFromFirestore(user);
@@ -48,6 +62,7 @@ export const getTasks = (user) => async dispatch => {
 export const getTasksToManage = (user) => async dispatch => {
     try {
         const tasks = await getTasksToManageFromFirestore(user);
+        console.log(tasks);
         dispatch(getTasksToManageSuccess(tasks));
     } catch (e) {
         console.log(e);
@@ -67,7 +82,7 @@ export const updateTaskStatus = (task) => async dispatch => {
         await updateTaskStatusInFirestore(task);
         task = {...task, isDone: !task.isDone};
         await sendMessageTaskStatusUpdated(task);
-        dispatch(setTaskForDetailSuccess(task));
+        dispatch(taskStastusUpdatedSuccess(task));
     } catch (e) {
         console.log(e);
     }
@@ -95,6 +110,16 @@ export const updateTask = ({title, description, date, receiver, task}) => async 
     try {
         task = await updateTaskInFirestore({title, description, date, receiver, task});
         await dispatch(taskUpdateSuccess(task));
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const removeTask = (task) => async dispatch => {
+    try {
+        await removeTaskFromFirestore(task);
+        await sendMessageTaskDeleted(task);
+        dispatch(removeTaskSuccess(task));
     } catch (e) {
         console.log(e);
     }

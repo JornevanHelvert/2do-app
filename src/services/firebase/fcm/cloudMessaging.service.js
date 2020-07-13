@@ -56,3 +56,19 @@ export const sendMessageTaskCreated = async (task) => {
         })
     })
 };
+
+export const sendMessageTaskDeleted = async (task) => {
+    const token = await getReceiverToken(task.Receiver);
+
+    await fetch(cloudFunctionUrls.TASK_CREATED, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            token,
+            user: task.Creator,
+            task: task.Title
+        })
+    })
+};

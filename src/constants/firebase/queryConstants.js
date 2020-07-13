@@ -3,5 +3,6 @@ export default {
     RECEIVER_FIELD: 'Receiver',
     TOKEN_COLLECTION: 'tokens',
     USERS_COLLECTION: 'users',
-    DUE_DATE_FIELD: 'DueDate'
+    DUE_DATE_FIELD: 'DueDate',
+    LAST_REMOVE_DATE: 'LastRemoveDate'
 }

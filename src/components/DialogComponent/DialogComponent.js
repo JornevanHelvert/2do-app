@@ -20,7 +20,7 @@ const DialogComponent = (props) => {
                 <MaterialUI.Button onClick={props.setOpenToClose} color="primary">
                     Nee
                 </MaterialUI.Button>
-                <MaterialUI.Button onClick={props.signOut} color="primary">
+                <MaterialUI.Button onClick={props.confirm} color="primary">
                     Ja
                 </MaterialUI.Button>
             </MaterialUI.DialogActions>
@@ -33,7 +33,7 @@ DialogComponent.propTypes = {
     setOpenToClose: PropTypes.func,
     title: PropTypes.string,
     content: PropTypes.string,
-    signOut: PropTypes.func
+    confirm: PropTypes.func
 };
 
 export default DialogComponent;

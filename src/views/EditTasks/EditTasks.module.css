@@ -17,14 +17,24 @@
     padding-left: 5%;
 }
 
+.saveButton {
+    color: green;
+    border-color: green;
+}
+
 .button {
     background-color: transparent;
-    color: green;
-    border: green solid 3px;
     font-weight: bold;
     width: 80%;
     height: 30px;
     margin-top: 10%;
+    border: solid 3px;
+}
+
+.removeButton {
+    color: red;
+    border-color: red;
+    margin-top: 1%;
 }
 
 .header {
