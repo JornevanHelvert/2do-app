@@ -5,7 +5,7 @@ import {BackButton} from "../../components";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import Loading from "../../components/Loading/Loading";
 import {useDispatch, useSelector} from "react-redux";
-import {clearTasks, getTasks, setTaskForDetail} from "../../redux/actions/taskActions";
+import {clearTasks, getTasks, setTaskForDetail, updateTaskDay} from "../../redux/actions/taskActions";
 import {useHistory} from "react-router";
 import DateSelector from "../../components/DateSelector/DateSelector";
 import {dateToShow} from "../../constants/dateSelector/dateToShow";
@@ -13,16 +13,15 @@ import {dateToShow} from "../../constants/dateSelector/dateToShow";
 const Tasks = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [dateIndex, setDateIndex] = useState(5);
-    const [date, setDate] = useState(dateToShow[dateIndex]);
-    const {username, tasks} = useSelector(state => ({
+    const {username, tasks, taskDay} = useSelector(state => ({
         username: state.user.username,
-        tasks: state.task.tasks
+        tasks: state.task.tasks,
+        taskDay: state.task.taskDay
     }));
 
     useEffect(() => {
-        dispatch(getTasks({user: username, date}));
-    }, [dispatch, username, date]);
+        dispatch(getTasks({user: username, date: taskDay}));
+    }, [dispatch, username, taskDay]);
 
     const redirectToTaskDetail = async (t) => {
         await dispatch(setTaskForDetail(t));
@@ -30,16 +29,8 @@ const Tasks = () => {
     };
 
     const updateDate = async (index) => {
-        let newIndex = dateIndex + index;
-        if (newIndex === dateToShow.length || newIndex < 0) {
-            return;
-        }
-
-        await dispatch(clearTasks());
-        const newDate = dateToShow[newIndex];
-        setDateIndex(newIndex);
-        setDate(newDate);
-        await dispatch(getTasks({user: username, date: newDate}));
+        await dispatch(updateTaskDay({currentDay: taskDay, daysToAdd: index}));
+        await dispatch(getTasks({user: username, date: taskDay}));
     };
 
     const renderTask = (t) => {
@@ -70,7 +61,7 @@ const Tasks = () => {
             <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.buttonContainer}>
                 <BackButton url={FRONTEND_ROUTES.HOME}/>
             </MaterialUI.Grid>
-            <DateSelector date={date} updateDate={updateDate}/>
+            <DateSelector date={taskDay} updateDate={updateDate}/>
             {tasks.length > 0 ? renderTasks() : <Loading/>}
         </div>
     );

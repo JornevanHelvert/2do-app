@@ -95,11 +95,10 @@ export const getUsersFromFirestore = async () => {
 };
 
 export const createTaskInFirestore = async ({receiver, title, description, date, currentUser}) => {
-    if (!receiver || !title || !date || !currentUser) {
+    date.setHours(0, 0, 0, 0);
+    if (!receiver || !title || !date || !currentUser || date.getTime() < calculateDate(0).getTime()) {
         throw new Error();
     }
-
-    date.setHours(0, 0, 0, 0);
 
     const task = {
         CreationDate: Date.now(),
@@ -117,14 +116,15 @@ export const createTaskInFirestore = async ({receiver, title, description, date,
 };
 
 export const updateTaskInFirestore = async ({receiver, title, description, date, task}) => {
-    if (!receiver || !title || !date) {
+    date.setHours(0, 0, 0, 0);
+    if (!receiver || !title || !date || date.getTime() < calculateDate(0).getTime()) {
         throw new Error();
     }
 
     task = {
         ...task,
         Description: description,
-        DueDate: date,
+        DueDate: date.getTime(),
         Receiver: receiver,
         Title: title,
     };

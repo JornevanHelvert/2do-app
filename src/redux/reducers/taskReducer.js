@@ -1,10 +1,13 @@
 import ActionTypes from "../../constants/redux/ActionTypes";
+import {dateToShow} from "../../constants/dateSelector/dateToShow";
 
 const initialState = {
     tasks: [],
     taskForDetail: {},
     tasksToManage: [],
-    taskToEdit: {}
+    taskToEdit: {},
+    taskDay: dateToShow[5],
+    taskToManageDay: dateToShow[5]
 };
 
 export default (state = initialState, action) => {
@@ -58,6 +61,18 @@ export default (state = initialState, action) => {
                 ...state,
                 taskToEdit: {},
                 tasksToManage: state.tasksToManage.filter(t => t.id !== action.task.id)
+            }
+        }
+        case ActionTypes.UPDATE_TASK_DAY: {
+            return {
+                ...state,
+                taskDay: action.day
+            }
+        }
+        case ActionTypes.UPDATE_TASK_TO_MANAGE_DAY: {
+            return {
+                ...state,
+                taskToManageDay: action.day
             }
         }
         default:

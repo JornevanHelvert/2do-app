@@ -3,30 +3,27 @@ import styles from './ManageTasks.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router";
 import {
-    clearTasksToManage,
     getTasksToManage,
-    setTaskToEdit
+    setTaskToEdit, updateTaskToManageDay
 } from "../../redux/actions/taskActions";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {MaterialUI} from "../../constants/UI/material-components";
 import {BackButton} from "../../components";
 import Loading from "../../components/Loading/Loading";
-import {dateToShow} from "../../constants/dateSelector/dateToShow";
 import DateSelector from "../../components/DateSelector/DateSelector";
 
 const ManageTasks = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const [dateIndex, setDateIndex] = useState(5);
-    const [date, setDate] = useState(dateToShow[dateIndex]);
-    const {username, tasks} = useSelector(state => ({
+    const {username, tasks, taskToManageDay} = useSelector(state => ({
         username: state.user.username,
-        tasks: state.task.tasksToManage
+        tasks: state.task.tasksToManage,
+        taskToManageDay: state.task.taskToManageDay
     }));
 
     useEffect(() => {
-        dispatch(getTasksToManage({user: username, date}))
-    }, [dispatch, username, date]);
+        dispatch(getTasksToManage({user: username, date: taskToManageDay}));
+    }, [dispatch, username, taskToManageDay]);
 
     const redirectToEditTask = (task) => {
         dispatch(setTaskToEdit(task));
@@ -34,18 +31,8 @@ const ManageTasks = () => {
     };
 
     const updateDate = async (index) => {
-        let newIndex = dateIndex + index;
-
-        if (newIndex === dateToShow.length || newIndex < 0) {
-            return;
-        }
-
-        await dispatch(clearTasksToManage());
-
-        const newDate = dateToShow[newIndex];
-        setDateIndex(newIndex);
-        setDate(newDate);
-        await dispatch(getTasksToManage({user: username, date: newDate}));
+        await dispatch(updateTaskToManageDay({currentDay: taskToManageDay, daysToAdd: index}));
+        await dispatch(getTasksToManage({user: username, date: taskToManageDay}));
     };
 
     const renderTask = (t) => {
@@ -75,7 +62,7 @@ const ManageTasks = () => {
             <MaterialUI.Grid container justify="flex-start" spacing={0} className={styles.buttonContainer}>
                 <BackButton url={FRONTEND_ROUTES.HOME}/>
             </MaterialUI.Grid>
-            <DateSelector date={date} updateDate={updateDate}/>
+            <DateSelector date={taskToManageDay} updateDate={updateDate}/>
             {tasks.length > 0 ? renderTasks() : <Loading/>}
         </div>
     );

@@ -24,13 +24,16 @@ const EditTasks = () => {
     const [receiver, setReceiver] = useState(task.Receiver);
     const [open, setOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [saveButtonDisabled, setSaveButtonDisabled] = useState(false);
 
     const update = async () => {
         try {
+            setSaveButtonDisabled(true);
             await dispatch(updateTask({title, description, date, receiver, task}));
             history.push(FRONTEND_ROUTES.MANAGE_TASKS);
         } catch (e) {
             setIsModalOpen(true);
+            setSaveButtonDisabled(false);
         }
     };
 
@@ -85,7 +88,9 @@ const EditTasks = () => {
                            onChange={(e) => setDate(new Date(e.target.value).getTime())}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
-                    <button className={`${styles.button} ${styles.saveButton}`} onClick={update}>Opslaan</button>
+                    <button className={`${styles.button} ${styles.saveButton}`} onClick={update}
+                            disabled={saveButtonDisabled}>Opslaan
+                    </button>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
                     <button className={`${styles.button} ${styles.removeButton}`}
@@ -95,7 +100,7 @@ const EditTasks = () => {
                 <DialogComponent open={open} confirm={deleteTask} setOpenToClose={() => setOpen(false)}
                                  title="Taak verwijderen"
                                  content="Ben je zeker dat je de taak wilt verwijderen?"/>
-                <RequiredFieldsModal isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)}/>
+                <RequiredFieldsModal isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} date={date}/>
             </MaterialUI.Grid>
         </div>
     );

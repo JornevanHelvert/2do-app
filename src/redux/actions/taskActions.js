@@ -9,6 +9,7 @@ import {
     sendMessageTaskDeleted,
     sendMessageTaskStatusUpdated
 } from "../../services/firebase/fcm/cloudMessaging.service";
+import {dateToShow} from "../../constants/dateSelector/dateToShow";
 
 const getTasksSuccess = (tasks) => ({
     type: ActionTypes.GET_ALL_TASKS_FOR_USER,
@@ -40,7 +41,7 @@ const taskUpdateSuccess = task => ({
     task
 });
 
-const taskStastusUpdatedSuccess = task => ({
+const taskStatusUpdatedSuccess = task => ({
    type: ActionTypes.TASK_STATUS_UPDATED_SUCCESS,
    task
 });
@@ -50,18 +51,20 @@ const removeTaskSuccess = task => ({
     task
 });
 
+const setUpdateTaskDay = day => ({
+    type: ActionTypes.UPDATE_TASK_DAY,
+    day
+});
+
+const setUpdateTaskToManageDay = day => ({
+    type: ActionTypes.UPDATE_TASK_TO_MANAGE_DAY,
+    day
+});
+
 export const getTasks = ({user, date}) => async dispatch => {
     try {
         const tasks = await getTasksFromFirestore(user, date);
         dispatch(getTasksSuccess(tasks));
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-export const clearTasks = () => async dispatch => {
-    try {
-        dispatch(getTasksSuccess([]));
     } catch (e) {
         console.log(e);
     }
@@ -97,7 +100,7 @@ export const updateTaskStatus = (task) => async dispatch => {
         await updateTaskStatusInFirestore(task);
         task = {...task, isDone: !task.isDone};
         await sendMessageTaskStatusUpdated(task);
-        dispatch(taskStastusUpdatedSuccess(task));
+        dispatch(taskStatusUpdatedSuccess(task));
     } catch (e) {
         console.log(e);
     }
@@ -109,6 +112,7 @@ export const createTask = ({receiver, title, description, date, currentUser}) =>
         await sendMessageTaskCreated(task);
         dispatch(setCreateTaskSuccess(task));
     } catch (e) {
+        console.log(e);
         throw new Error();
     }
 };
@@ -126,6 +130,7 @@ export const updateTask = ({title, description, date, receiver, task}) => async 
         task = await updateTaskInFirestore({title, description, date, receiver, task});
         await dispatch(taskUpdateSuccess(task));
     } catch (e) {
+        console.log(e);
         throw new Error();
     }
 };
@@ -135,6 +140,36 @@ export const removeTask = (task) => async dispatch => {
         await removeTaskFromFirestore(task);
         await sendMessageTaskDeleted(task);
         dispatch(removeTaskSuccess(task));
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const updateTaskDay = ({currentDay, daysToAdd}) => async dispatch => {
+    try {
+        let index = dateToShow.indexOf(currentDay);
+
+        if ((index < dateToShow.length - 1 || daysToAdd < 0) && (index > 0 || daysToAdd > 0)) {
+            dispatch(getTasksSuccess([]));
+            index += daysToAdd;
+            const date = dateToShow[index];
+            dispatch(setUpdateTaskDay(date));
+        }
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const updateTaskToManageDay = ({currentDay, daysToAdd}) => async dispatch => {
+    try {
+        let index = dateToShow.indexOf(currentDay);
+
+        if ((index < dateToShow.length - 1 || daysToAdd < 0) && (index > 0 || daysToAdd > 0)) {
+            dispatch(getTasksToManageSuccess([]));
+            index += daysToAdd;
+            const date = dateToShow[index];
+            dispatch(setUpdateTaskToManageDay(date));
+        }
     } catch (e) {
         console.log(e);
     }

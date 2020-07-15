@@ -10,6 +10,8 @@ import {
     askNotificationPermission,
     setRefreshTokenListener
 } from "../../services/firebase/fcm/cloudMessaging.service";
+import {updateTaskDay, updateTaskToManageDay} from "../../redux/actions/taskActions";
+import {dateToShow} from "../../constants/dateSelector/dateToShow";
 
 const Home = () => {
     const {username} = useSelector(state => ({
@@ -21,9 +23,15 @@ const Home = () => {
     const [open, setOpen] = useState(false);
 
     const redirectToPictures = () => history.push(FRONTEND_ROUTES.PICTURES);
-    const redirectToTasks = () => history.push(FRONTEND_ROUTES.TASKS);
+    const redirectToTasks = async () => {
+        await dispatch(updateTaskDay({currentDay: dateToShow[5], daysToAdd: 0}));
+        history.push(FRONTEND_ROUTES.TASKS);
+    }
     const redirectToNewTask = () => history.push(FRONTEND_ROUTES.NEW_TASK);
-    const redirectToManageTask = () => history.push(FRONTEND_ROUTES.MANAGE_TASKS);
+    const redirectToManageTask = async () => {
+        await dispatch(updateTaskToManageDay({currentDay: dateToShow[5], daysToAdd: 0}));
+        history.push(FRONTEND_ROUTES.MANAGE_TASKS)
+    };
     const signOut = async () => {
         setOpen(false);
         await dispatch(logout());

@@ -23,13 +23,16 @@ const NewTask = () => {
     const [date, setDate] = useState(new Date());
     const [receiver, setReceiver] = useState('Ceylan Ools');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
 
     const addTask = async () => {
         try {
+            setButtonDisabled(true);
             await dispatch(createTask({title, description, date, receiver, currentUser}));
             history.push(FRONTEND_ROUTES.HOME);
         } catch (e) {
             setIsModalOpen(true);
+            setButtonDisabled(false);
         }
     };
 
@@ -58,7 +61,7 @@ const NewTask = () => {
                     </select>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={4} className={styles.label}>
-                    <label>Titel: </label>
+                    <label>Titel*: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
                     <input type="text" className={styles.input} onChange={(e) => setTitle(e.target.value)}/>
@@ -70,16 +73,16 @@ const NewTask = () => {
                     <input type="text" className={styles.input} onChange={(e) => setDescription(e.target.value)}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={4} className={styles.label}>
-                    <label>Datum: </label>
+                    <label>Datum*: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
                     <input type="date" className={styles.input} value={moment(date).format('YYYY-MM-DD')}
                            onChange={(e) => setDate(new Date(e.target.value))}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
-                    <button className={styles.button} onClick={addTask}>Maak aan</button>
+                    <button className={styles.button} onClick={addTask} disabled={buttonDisabled}>Maak aan</button>
                 </MaterialUI.Grid>
-                <RequiredFieldsModal closeModal={() => setIsModalOpen(false)} isModalOpen={isModalOpen}/>
+                <RequiredFieldsModal closeModal={() => setIsModalOpen(false)} isModalOpen={isModalOpen} date={date}/>
             </MaterialUI.Grid>
         </div>
     );
