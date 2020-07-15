@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './TaskDetail.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
@@ -9,12 +9,15 @@ import {updateTaskStatus} from "../../redux/actions/taskActions";
 
 const TaskDetail = () => {
     const dispatch = useDispatch();
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const {task} = useSelector(state => ({
         task: state.task.taskForDetail,
     }));
 
     const updateStatus = async () => {
+        setButtonDisabled(true);
         dispatch(updateTaskStatus(task));
+        setTimeout(() => setButtonDisabled(false), 5000);
     };
 
     return (
@@ -42,7 +45,7 @@ const TaskDetail = () => {
                 </section>
                 <section className={styles.row}>
                     <button className={task.isDone ? styles.markAsNotDone : styles.markAsDone}
-                            onClick={updateStatus}>
+                            onClick={updateStatus} disabled={buttonDisabled}>
                        {task.isDone? 'Markeren als onvoltooid' : 'Markeren als voltooid'}
                     </button>
                 </section>
