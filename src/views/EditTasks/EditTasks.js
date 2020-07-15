@@ -8,6 +8,7 @@ import {useHistory} from "react-router";
 import {removeTask, updateTask} from "../../redux/actions/taskActions";
 import {getAllUsers} from "../../redux/actions/userActions";
 import moment from "moment";
+import RequiredFieldsModal from "../../components/RequiredFieldsModal/RequiredFieldsModal";
 
 const EditTasks = () => {
     const dispatch = useDispatch();
@@ -22,10 +23,15 @@ const EditTasks = () => {
     const [date, setDate] = useState(new Date(task.DueDate));
     const [receiver, setReceiver] = useState(task.Receiver);
     const [open, setOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const update = async () => {
-        await dispatch(updateTask({title, description, date, receiver, task}));
-        history.push(FRONTEND_ROUTES.MANAGE_TASKS);
+        try {
+            await dispatch(updateTask({title, description, date, receiver, task}));
+            history.push(FRONTEND_ROUTES.MANAGE_TASKS);
+        } catch (e) {
+            setIsModalOpen(true);
+        }
     };
 
     const deleteTask = async () => {
@@ -82,10 +88,14 @@ const EditTasks = () => {
                     <button className={`${styles.button} ${styles.saveButton}`} onClick={update}>Opslaan</button>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
-                    <button className={`${styles.button} ${styles.removeButton}`} onClick={() => setOpen(true)}>Verwijderen</button>
+                    <button className={`${styles.button} ${styles.removeButton}`}
+                            onClick={() => setOpen(true)}>Verwijderen
+                    </button>
                 </MaterialUI.Grid>
-                <DialogComponent open={open} confirm={deleteTask} setOpenToClose={() => setOpen(false)} title="Taak verwijderen"
+                <DialogComponent open={open} confirm={deleteTask} setOpenToClose={() => setOpen(false)}
+                                 title="Taak verwijderen"
                                  content="Ben je zeker dat je de taak wilt verwijderen?"/>
+                <RequiredFieldsModal isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)}/>
             </MaterialUI.Grid>
         </div>
     );

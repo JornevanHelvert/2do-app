@@ -7,6 +7,8 @@ import {createTask} from "../../redux/actions/taskActions";
 import {useHistory} from "react-router";
 import {FRONTEND_ROUTES} from "../../constants/navigation/Routes";
 import {BackButton} from "../../components";
+import RequiredFieldsModal from "../../components/RequiredFieldsModal/RequiredFieldsModal";
+import moment from "moment";
 
 const NewTask = () => {
     const dispatch = useDispatch();
@@ -20,10 +22,15 @@ const NewTask = () => {
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date());
     const [receiver, setReceiver] = useState('Ceylan Ools');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const addTask = async () => {
-        dispatch(createTask({title, description, date, receiver, currentUser}));
-        history.push(FRONTEND_ROUTES.HOME);
+        try {
+            await dispatch(createTask({title, description, date, receiver, currentUser}));
+            history.push(FRONTEND_ROUTES.HOME);
+        } catch (e) {
+            setIsModalOpen(true);
+        }
     };
 
     useEffect(() => {
@@ -43,7 +50,8 @@ const NewTask = () => {
                     <label>Voor*: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
-                    <select name="reciever" id="reciever" className={styles.input} onChange={(e) => setReceiver(e.target.value)}>
+                    <select name="reciever" id="reciever" className={styles.input}
+                            onChange={(e) => setReceiver(e.target.value)}>
                         {users.map(u => {
                             return <option value={u.name} key={u.id}>{u.nickname}</option>
                         })}
@@ -65,11 +73,13 @@ const NewTask = () => {
                     <label>Datum: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
-                    <input type="date" className={styles.input} onChange={(e) => setDate(new Date(e.target.value))}/>
+                    <input type="date" className={styles.input} value={moment(date).format('YYYY-MM-DD')}
+                           onChange={(e) => setDate(new Date(e.target.value))}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
                     <button className={styles.button} onClick={addTask}>Maak aan</button>
                 </MaterialUI.Grid>
+                <RequiredFieldsModal closeModal={() => setIsModalOpen(false)} isModalOpen={isModalOpen}/>
             </MaterialUI.Grid>
         </div>
     );

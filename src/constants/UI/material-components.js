@@ -9,6 +9,7 @@ import DialogContentText from "@material-ui/core/DialogContentText/DialogContent
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal";
 
 export const MaterialUI = {
     Grid,
@@ -22,4 +23,5 @@ export const MaterialUI = {
     DialogTitle,
     Slide,
     Button,
+    Modal
 };

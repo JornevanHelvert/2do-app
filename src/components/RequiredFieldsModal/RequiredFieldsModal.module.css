@@ -1,0 +1,10 @@
+.modal {
+    color: white;
+    background-color: #2c2c2c;
+    padding: 5%;
+    margin: 55% 5%;
+}
+
+.modal button {
+    font-weight: bold;
+}

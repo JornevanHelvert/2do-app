@@ -95,6 +95,10 @@ export const getUsersFromFirestore = async () => {
 };
 
 export const createTaskInFirestore = async ({receiver, title, description, date, currentUser}) => {
+    if (!receiver || !title || !date || !currentUser) {
+        throw new Error();
+    }
+
     date.setHours(0, 0, 0, 0);
 
     const task = {
@@ -113,6 +117,10 @@ export const createTaskInFirestore = async ({receiver, title, description, date,
 };
 
 export const updateTaskInFirestore = async ({receiver, title, description, date, task}) => {
+    if (!receiver || !title || !date) {
+        throw new Error();
+    }
+
     task = {
         ...task,
         Description: description,
@@ -162,4 +170,4 @@ const getEmptyTaskToManageMessage = (date) => {
         return {value: `Je hebt voor ${date.title.toLowerCase()} geen taken gemaakt`, id: 'no-tasks'}
     }
     return {value: `Je hebt voor ${date.title.toLowerCase()} nog geen taken gemaakt`, id: 'no-tasks'};
-}
+};

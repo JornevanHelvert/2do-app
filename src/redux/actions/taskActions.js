@@ -109,7 +109,7 @@ export const createTask = ({receiver, title, description, date, currentUser}) =>
         await sendMessageTaskCreated(task);
         dispatch(setCreateTaskSuccess(task));
     } catch (e) {
-        console.log(e);
+        throw new Error();
     }
 };
 
@@ -126,7 +126,7 @@ export const updateTask = ({title, description, date, receiver, task}) => async 
         task = await updateTaskInFirestore({title, description, date, receiver, task});
         await dispatch(taskUpdateSuccess(task));
     } catch (e) {
-        console.log(e);
+        throw new Error();
     }
 };
 
