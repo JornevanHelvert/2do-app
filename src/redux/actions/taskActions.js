@@ -50,20 +50,35 @@ const removeTaskSuccess = task => ({
     task
 });
 
-export const getTasks = (user) => async dispatch => {
+export const getTasks = ({user, date}) => async dispatch => {
     try {
-        const tasks = await getTasksFromFirestore(user);
+        const tasks = await getTasksFromFirestore(user, date);
         dispatch(getTasksSuccess(tasks));
     } catch (e) {
         console.log(e);
     }
 };
 
-export const getTasksToManage = (user) => async dispatch => {
+export const clearTasks = () => async dispatch => {
     try {
-        const tasks = await getTasksToManageFromFirestore(user);
-        console.log(tasks);
+        dispatch(getTasksSuccess([]));
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const getTasksToManage = ({user, date}) => async dispatch => {
+    try {
+        const tasks = await getTasksToManageFromFirestore(user, date);
         dispatch(getTasksToManageSuccess(tasks));
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const clearTasksToManage = () => async dispatch => {
+    try {
+        dispatch(getTasksToManageSuccess([]));
     } catch (e) {
         console.log(e);
     }

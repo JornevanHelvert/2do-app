@@ -1,15 +1,14 @@
 import * as firebase from "firebase";
 import QueryConstants from "../../../constants/firebase/queryConstants";
+import {calculateDate} from "../../../constants/dateSelector/dateToShow";
 
 const db = firebase.firestore();
 
-const getTasks = async () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+const getTasks = async (date) => {
+    date.setHours(0, 0, 0, 0);
 
     const snapshot = await db.collection(QueryConstants.TASKS_COLLECTION)
-        .where(QueryConstants.DUE_DATE_FIELD, '>=', today.getTime())
-        .orderBy(QueryConstants.DUE_DATE_FIELD)
+        .where(QueryConstants.DUE_DATE_FIELD, '==', date.getTime())
         .limit(20)
         .get();
 
@@ -26,27 +25,27 @@ const getTasks = async () => {
     return tasks;
 };
 
-export const getTasksFromFirestore = async (user) => {
+export const getTasksFromFirestore = async (user, date) => {
     await removeOldTasks();
     const tasks = (
-        await getTasks()
+        await getTasks(date.value)
     ).filter(t => t.Receiver === user);
 
     if (tasks.length === 0) {
-        tasks.push('Er zijn nog geen taken voor jou');
+        tasks.push(getEmptyTasksMessage(date));
         return tasks;
     }
 
     return tasks;
 };
 
-export const getTasksToManageFromFirestore = async (user) => {
+export const getTasksToManageFromFirestore = async (user, date) => {
     const tasks = (
-        await getTasks()
+        await getTasks(date.value)
     ).filter(t => t.Creator === user);
 
     if (tasks.length === 0) {
-        tasks.push('Je hebt nog geen taken gemaakt');
+        tasks.push(getEmptyTaskToManageMessage(date));
         return tasks;
     }
 
@@ -96,11 +95,13 @@ export const getUsersFromFirestore = async () => {
 };
 
 export const createTaskInFirestore = async ({receiver, title, description, date, currentUser}) => {
+    date.setHours(0, 0, 0, 0);
+
     const task = {
         CreationDate: Date.now(),
         Creator: currentUser,
         Description: description,
-        DueDate: date,
+        DueDate: date.getTime(),
         Receiver: receiver,
         Title: title,
         isDone: false
@@ -128,8 +129,7 @@ export const updateTaskInFirestore = async ({receiver, title, description, date,
 export const removeTaskFromFirestore = async (task) => db.collection(QueryConstants.TASKS_COLLECTION).doc(task.id).delete();
 
 const removeOldTasks = async () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = calculateDate(-5);
 
     const lastRemoveDate = (
         await db.collection(QueryConstants.TASKS_COLLECTION).doc(QueryConstants.LAST_REMOVE_DATE).get()
@@ -141,7 +141,6 @@ const removeOldTasks = async () => {
             .get();
 
         snapshot.forEach(t => {
-            console.log(t.id);
             db.collection(QueryConstants.TASKS_COLLECTION).doc(t.id).delete();
         });
 
@@ -150,3 +149,17 @@ const removeOldTasks = async () => {
         });
     }
 };
+
+const getEmptyTasksMessage = (date) => {
+    if (date.value.getTime() < calculateDate(0).getTime()) {
+        return {value: `Er waren ${date.title.toLowerCase()} geen taken voor jou`, id: 'no-tasks'}
+    }
+    return {value: `Er zijn ${date.title.toLowerCase()} nog geen taken voor jou`, id: 'no-tasks'};
+};
+
+const getEmptyTaskToManageMessage = (date) => {
+    if (date.value.getTime() < calculateDate(0).getTime()) {
+        return {value: `Je hebt voor ${date.title.toLowerCase()} geen taken gemaakt`, id: 'no-tasks'}
+    }
+    return {value: `Je hebt voor ${date.title.toLowerCase()} nog geen taken gemaakt`, id: 'no-tasks'};
+}

@@ -65,7 +65,7 @@ const NewTask = () => {
                     <label>Datum: </label>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={8} className={styles.alignment}>
-                    <input type="date" className={styles.input} onChange={(e) => setDate(new Date(e.target.value).getTime())}/>
+                    <input type="date" className={styles.input} onChange={(e) => setDate(new Date(e.target.value))}/>
                 </MaterialUI.Grid>
                 <MaterialUI.Grid item xs={12} className={styles.alignment}>
                     <button className={styles.button} onClick={addTask}>Maak aan</button>
